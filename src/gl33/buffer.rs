@@ -49,7 +49,7 @@ impl buffer::HasBuffer for GL33 {
 
     unsafe {
       gl::BindBuffer(gl::ARRAY_BUFFER, buffer.handle);
-      let ptr = gl::MapBuffer(gl::ARRAY_BUFFER, gl::MAP_WRITE_BIT);
+      let ptr = gl::MapBuffer(gl::ARRAY_BUFFER, gl::WRITE_ONLY);
 
       ptr::copy_nonoverlapping(values.as_ptr() as *const c_void, ptr, bytes);
 
@@ -70,7 +70,7 @@ impl buffer::HasBuffer for GL33 {
 
     unsafe {
       gl::BindBuffer(gl::ARRAY_BUFFER, buffer.handle);
-      let ptr = gl::MapBuffer(gl::ARRAY_BUFFER, gl::MAP_WRITE_BIT);
+      let ptr = gl::MapBuffer(gl::ARRAY_BUFFER, gl::WRITE_ONLY);
 
       *(ptr.offset(off as isize) as *mut T) = x.clone();
 
@@ -86,7 +86,7 @@ impl buffer::HasBuffer for GL33 {
 
     unsafe {
       gl::BindBuffer(gl::ARRAY_BUFFER, buffer.handle);
-      let ptr = gl::MapBuffer(gl::ARRAY_BUFFER, gl::MAP_WRITE_BIT);
+      let ptr = gl::MapBuffer(gl::ARRAY_BUFFER, gl::READ_ONLY);
 
       ptr::copy_nonoverlapping(ptr, values.as_ptr() as *mut c_void, buffer.bytes);
 
@@ -104,7 +104,7 @@ impl buffer::HasBuffer for GL33 {
 
     unsafe {
       gl::BindBuffer(gl::ARRAY_BUFFER, buffer.handle);
-      let ptr = gl::MapBuffer(gl::ARRAY_BUFFER, gl::MAP_WRITE_BIT);
+      let ptr = gl::MapBuffer(gl::ARRAY_BUFFER, gl::READ_ONLY);
 
       let x = &*(ptr.offset(off as isize) as *const T);
 
