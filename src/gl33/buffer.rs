@@ -6,6 +6,7 @@ use core::mem;
 use std::cmp::Ordering::*;
 use std::os::raw::c_void;
 use std::ptr;
+use std::slice;
 
 pub struct GLBuffer {
   pub handle: GLuint,
@@ -81,20 +82,18 @@ impl buffer::HasBuffer for GL33 {
     Ok(())
   }
 
-  fn read_whole<T>(buffer: &GLBuffer) -> Vec<T> {
-    let values = Vec::with_capacity(buffer.bytes / mem::size_of::<T>());
-
+  fn read_whole<T>(buffer: &GLBuffer, nb: usize) -> Vec<T> where T: Clone {
     unsafe {
       gl::BindBuffer(gl::ARRAY_BUFFER, buffer.handle);
-      let ptr = gl::MapBuffer(gl::ARRAY_BUFFER, gl::READ_ONLY);
+      let ptr = gl::MapBuffer(gl::ARRAY_BUFFER, gl::READ_ONLY) as *const T;
 
-      ptr::copy_nonoverlapping(ptr, values.as_ptr() as *mut c_void, buffer.bytes);
+      let values = Vec::from(slice::from_raw_parts(ptr, nb));
 
       let _ = gl::UnmapBuffer(gl::ARRAY_BUFFER);
       gl::BindBuffer(gl::ARRAY_BUFFER, 0);
-    }
 
-    values
+      values
+    }
   }
 
   fn read<T>(buffer: &GLBuffer, off: usize) -> Option<T> where T: Clone {
