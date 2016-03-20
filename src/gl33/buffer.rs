@@ -64,7 +64,7 @@ impl buffer::HasBuffer for GL33 {
     }
   }
 
-  fn write<T>(buffer: &GLBuffer, off: usize, x: &T) -> Result<(), buffer::BufferError> where T: Clone {
+  fn write<T>(buffer: &GLBuffer, off: usize, x: T) -> Result<(), buffer::BufferError> where T: Copy {
     if off >= buffer.bytes {
       return Err(buffer::BufferError::Overflow);
     }
@@ -73,7 +73,7 @@ impl buffer::HasBuffer for GL33 {
       gl::BindBuffer(gl::ARRAY_BUFFER, buffer.handle);
       let ptr = gl::MapBuffer(gl::ARRAY_BUFFER, gl::WRITE_ONLY);
 
-      *(ptr.offset(off as isize) as *mut T) = x.clone();
+      *(ptr.offset(off as isize) as *mut T) = x;
 
       let _ = gl::UnmapBuffer(gl::ARRAY_BUFFER);
       gl::BindBuffer(gl::ARRAY_BUFFER, 0);
@@ -82,7 +82,7 @@ impl buffer::HasBuffer for GL33 {
     Ok(())
   }
 
-  fn read_whole<T>(buffer: &GLBuffer, nb: usize) -> Vec<T> where T: Clone {
+  fn read_whole<T>(buffer: &GLBuffer, nb: usize) -> Vec<T> where T: Copy {
     unsafe {
       gl::BindBuffer(gl::ARRAY_BUFFER, buffer.handle);
       let ptr = gl::MapBuffer(gl::ARRAY_BUFFER, gl::READ_ONLY) as *const T;
@@ -96,7 +96,7 @@ impl buffer::HasBuffer for GL33 {
     }
   }
 
-  fn read<T>(buffer: &GLBuffer, off: usize) -> Option<T> where T: Clone {
+  fn read<T>(buffer: &GLBuffer, off: usize) -> Option<T> where T: Copy {
     if off >= buffer.bytes {
       return None;
     }
@@ -110,7 +110,7 @@ impl buffer::HasBuffer for GL33 {
       let _ = gl::UnmapBuffer(gl::ARRAY_BUFFER);
       gl::BindBuffer(gl::ARRAY_BUFFER, 0);
 
-      Some(x.clone())
+      Some(*x)
     }
   }
 }
