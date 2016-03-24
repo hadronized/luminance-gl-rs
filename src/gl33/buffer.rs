@@ -8,6 +8,8 @@ use std::os::raw::c_void;
 use std::ptr;
 use std::slice;
 
+pub type Buffer<A, T> = buffer::Buffer<GL33, A, T>;
+
 pub struct GLBuffer {
   pub handle: GLuint,
   pub bytes: usize
