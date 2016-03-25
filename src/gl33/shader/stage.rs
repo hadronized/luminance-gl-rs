@@ -35,7 +35,7 @@ impl HasStage for GL33 {
       gl::ShaderSource(handle, 1, [src.as_ptr()].as_ptr(), null());
       gl::CompileShader(handle);
 
-      let mut compiled: GLboolean = gl::TRUE;
+      let mut compiled: GLboolean = gl::FALSE;
       gl::GetShaderiv(handle, gl::COMPILE_STATUS, (&mut compiled as *mut GLboolean) as *mut GLint);
 
       if compiled == gl::TRUE {

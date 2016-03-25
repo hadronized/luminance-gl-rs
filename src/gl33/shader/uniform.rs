@@ -1,9 +1,11 @@
 use gl;
 use gl::types::*;
 use gl33::token::GL33;
-use luminance::shader::uniform::HasUniform;
+use luminance::shader::uniform;
 
-impl HasUniform for GL33 {
+pub type Uniform<T> = uniform::Uniform<GL33, T>;
+
+impl uniform::HasUniform for GL33 {
   type U = GLint;
 
   fn update1_i32(u: &Self::U, x: i32) {
