@@ -56,6 +56,10 @@ impl HasStage for GL33 {
       }
     }
   }
+
+  fn free_shader(shader: &mut Self::AStage) {
+    unsafe { gl::DeleteShader(*shader) }
+  }
 }
 
 fn glsl_pragma_src(src: &str) -> String {
