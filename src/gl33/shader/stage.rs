@@ -1,7 +1,6 @@
 use gl;
 use gl::types::*;
 use gl33::token::GL33;
-use error::debug_gl;
 use luminance::shader::stage;
 use luminance::shader::stage::{HasStage, StageError, Type};
 use std::ffi::CString;
@@ -26,36 +25,29 @@ impl HasStage for GL33 {
     };
 
     unsafe {
-      let c_src = CString::new(glsl_pragma_src(src).as_bytes()).unwrap();
+      let src = CString::new(glsl_pragma_src(src).as_bytes()).unwrap();
       let handle = gl::CreateShader(shader_type);
-      debug_gl();
 
       if handle == 0 {
         return Err(StageError::CompilationFailed(String::from("unable to create shader stage")));
       }
 
-      gl::ShaderSource(handle, 1, [c_src.as_ptr()].as_ptr(), null());
-      debug_gl();
+      gl::ShaderSource(handle, 1, [src.as_ptr()].as_ptr(), null());
       gl::CompileShader(handle);
-      debug_gl();
 
-      let mut compiled: GLboolean = gl::FALSE;
+      let mut compiled: GLboolean = gl::TRUE;
       gl::GetShaderiv(handle, gl::COMPILE_STATUS, (&mut compiled as *mut GLboolean) as *mut GLint);
-      debug_gl();
-
-
-      let mut log_len: GLint = 0;
-      gl::GetShaderiv(handle, gl::INFO_LOG_LENGTH, &mut log_len);
-      debug_gl();
-
-      println!("info log length is {}", log_len);
-      let mut log: Vec<u8> = Vec::with_capacity(log_len as usize);
-      gl::GetShaderInfoLog(handle, log_len, null_mut(), log.as_mut_ptr() as *mut GLchar);
-      debug_gl();
 
       if compiled == gl::TRUE {
         Ok(handle)
       } else {
+        let mut log_len: GLint = 0;
+        gl::GetShaderiv(handle, gl::INFO_LOG_LENGTH, &mut log_len);
+
+        let mut log: Vec<u8> = Vec::with_capacity(log_len as usize);
+        gl::GetShaderInfoLog(handle, log_len, null_mut(), log.as_mut_ptr() as *mut GLchar);
+
+        log.set_len(log_len as usize);
         Err(StageError::CompilationFailed(String::from_utf8(log).unwrap()))
       }
     }
