@@ -40,8 +40,11 @@ impl HasStage for GL33 {
       let mut log_len: GLint = 0;
       let mut log: Vec<u8> = Vec::with_capacity(log_len as usize + 1); // extra '\0'
       gl::GetShaderiv(handle, gl::COMPILE_STATUS, (&mut compiled as *mut GLboolean) as *mut GLint);
+      debug_gl();
       gl::GetShaderiv(handle, gl::INFO_LOG_LENGTH, &mut log_len);
+      debug_gl();
       gl::GetShaderInfoLog(handle, log_len, null_mut(), log.as_mut_ptr() as *mut i8);
+      debug_gl();
 
       if compiled == gl::TRUE {
         Ok(handle)
