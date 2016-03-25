@@ -15,12 +15,6 @@ pub struct GLBuffer {
   pub bytes: usize
 }
 
-impl Drop for GLBuffer {
-  fn drop(&mut self) {
-    unsafe { gl::DeleteBuffers(1, &self.handle) }
-  }
-}
-
 impl buffer::HasBuffer for GL33 {
   type ABuffer = GLBuffer;
 
@@ -38,6 +32,10 @@ impl buffer::HasBuffer for GL33 {
       handle: buffer,
       bytes: size
     }
+  }
+
+  fn free(buffer: &mut Self::ABuffer) {
+    unsafe { gl::DeleteBuffers(1, &buffer.handle) }
   }
 
   fn write_whole<T>(buffer: &GLBuffer, values: &Vec<T>) -> Result<(), buffer::BufferError> {

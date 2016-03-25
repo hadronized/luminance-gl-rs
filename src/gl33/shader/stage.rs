@@ -11,6 +11,10 @@ pub use luminance::shader::stage::{TessellationControlShader, TessellationEvalua
 
 pub type Stage<T> = stage::Stage<GL33, T>;
 
+//impl<T> Drop for Stage<T> {
+//  fn drop
+//}
+
 impl HasStage for GL33 {
   type AStage = GLuint;
 
