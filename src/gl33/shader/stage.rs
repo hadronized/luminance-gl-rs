@@ -1,6 +1,7 @@
 use gl;
 use gl::types::*;
 use gl33::token::GL33;
+use error::debug_gl;
 use luminance::shader::stage;
 use luminance::shader::stage::{HasStage, StageError, Type};
 use std::ptr::{null, null_mut};
@@ -27,9 +28,13 @@ impl HasStage for GL33 {
     unsafe {
       let src = glsl_pragma_src(src);
       let handle = gl::CreateShader(shader_type);
+      debug_gl();
 
+      println!("shader {} source dump: {}", handle, src);
       gl::ShaderSource(handle, 1, &(src.as_ptr() as *const i8), null());
+      debug_gl();
       gl::CompileShader(handle);
+      debug_gl();
 
       let mut compiled: GLboolean = gl::FALSE;
       let mut log_len: GLint = 0;
