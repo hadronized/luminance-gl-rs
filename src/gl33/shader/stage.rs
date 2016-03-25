@@ -4,8 +4,8 @@ use gl33::token::GL33;
 use error::debug_gl;
 use luminance::shader::stage;
 use luminance::shader::stage::{HasStage, StageError, Type};
+use std::ffi::CString;
 use std::ptr::{null, null_mut};
-use std::str::from_utf8;
 
 pub use luminance::shader::stage::{TessellationControlShader, TessellationEvaluationShader,
                                    VertexShader, GeometryShader, FragmentShader};
@@ -26,30 +26,37 @@ impl HasStage for GL33 {
     };
 
     unsafe {
-      let src = glsl_pragma_src(src);
+      let c_src = CString::new(glsl_pragma_src(src).as_bytes()).unwrap();
       let handle = gl::CreateShader(shader_type);
       debug_gl();
 
-      println!("shader {} source dump: {}", handle, src);
-      gl::ShaderSource(handle, 1, &(src.as_ptr() as *const i8), null());
+      if handle == 0 {
+        return Err(StageError::CompilationFailed(String::from("unable to create shader stage")));
+      }
+
+      gl::ShaderSource(handle, 1, [c_src.as_ptr()].as_ptr(), null());
       debug_gl();
       gl::CompileShader(handle);
       debug_gl();
 
       let mut compiled: GLboolean = gl::FALSE;
-      let mut log_len: GLint = 0;
-      let mut log: Vec<u8> = Vec::with_capacity(log_len as usize + 1); // extra '\0'
       gl::GetShaderiv(handle, gl::COMPILE_STATUS, (&mut compiled as *mut GLboolean) as *mut GLint);
       debug_gl();
+
+
+      let mut log_len: GLint = 0;
       gl::GetShaderiv(handle, gl::INFO_LOG_LENGTH, &mut log_len);
       debug_gl();
-      gl::GetShaderInfoLog(handle, log_len, null_mut(), log.as_mut_ptr() as *mut i8);
+
+      println!("info log length is {}", log_len);
+      let mut log: Vec<u8> = Vec::with_capacity(log_len as usize);
+      gl::GetShaderInfoLog(handle, log_len, null_mut(), log.as_mut_ptr() as *mut GLchar);
       debug_gl();
 
       if compiled == gl::TRUE {
         Ok(handle)
       } else {
-        Err(StageError::CompilationFailed(String::from(from_utf8(&log[..]).unwrap())))
+        Err(StageError::CompilationFailed(String::from_utf8(log).unwrap()))
       }
     }
   }
