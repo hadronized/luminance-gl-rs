@@ -6,7 +6,7 @@ use luminance::shader::program::{HasProgram, ProgramError};
 use luminance::shader::uniform::UniformName;
 use std::ptr::null_mut;
 
-pub type Program = program::Program<GL33>;
+pub type Program<U> = program::Program<GL33, U>;
 
 impl HasProgram for GL33 {
   type Program = GLuint;
@@ -60,5 +60,11 @@ impl HasProgram for GL33 {
       },
       UniformName::SemanticName(sem) => { Some(sem as GLint) }
     }
+  }
+
+  fn update_uniforms<F>(program: &Self::Program, f: F) where F: Fn() {
+    unsafe { gl::UseProgram(*program) };
+    f();
+    unsafe { gl::UseProgram(0) };
   }
 }
