@@ -4,6 +4,7 @@ use gl33::token::GL33;
 use luminance::shader::program;
 use luminance::shader::program::{HasProgram, ProgramError};
 use luminance::shader::uniform::UniformName;
+use std::ffi::CString;
 use std::ptr::null_mut;
 
 pub type Program<U> = program::Program<GL33, U>;
@@ -55,7 +56,7 @@ impl HasProgram for GL33 {
   fn map_uniform(program: &Self::Program, name: UniformName) -> Option<Self::U> {
     match name {
       UniformName::StringName(name) => {
-        let location = unsafe { gl::GetUniformLocation(*program, name.as_ptr() as *const GLchar) };
+        let location = unsafe { gl::GetUniformLocation(*program, CString::new(name.as_bytes()).unwrap().as_ptr() as *const GLchar) };
         if location != -1 { Some(location) } else { None }
       },
       UniformName::SemanticName(sem) => { Some(sem as GLint) }
