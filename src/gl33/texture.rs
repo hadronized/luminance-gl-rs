@@ -49,17 +49,17 @@ fn to_target(l: Layering, d: Dim) -> GLenum {
   }
 }
 
-fn create_texture_storage<L, D, P>(texture: GLuint, size: D::Size, mipmaps: u32)
-    where L: Layerable,
-          D: Dimensionable,
-          P: Pixel {
-  match L::layering() {
-    Layering::Flat => match D::dim() {
-      Dim::DIM1 => {
-        for level in 0..mipmaps {
-
-        }
-      }
-    }
-  }
-}
+//fn create_texture_storage<L, D, P>(target: GLenum, size: D::Size, mipmaps: u32)
+//    where L: Layerable,
+//          D: Dimensionable,
+//          P: Pixel {
+//  match L::layering() {
+//    Layering::Flat => match D::dim() {
+//      Dim::DIM1 => {
+//        for level in 0..mipmaps {
+//          //gl::TexImage2D(target, level, 
+//        }
+//      }
+//    }
+//  }
+//}
