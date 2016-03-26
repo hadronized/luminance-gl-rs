@@ -62,9 +62,11 @@ impl HasProgram for GL33 {
     }
   }
 
-  fn update_uniforms<F>(program: &Self::Program, f: F) where F: Fn() {
+  fn start_uniform_update(program: &Self::Program) {
     unsafe { gl::UseProgram(*program) };
-    f();
+  }
+
+  fn end_uniform_update(program: &Self::Program) {
     unsafe { gl::UseProgram(0) };
   }
 }
