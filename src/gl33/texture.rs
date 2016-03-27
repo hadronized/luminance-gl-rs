@@ -90,17 +90,17 @@ fn create_texture_storage<L, D, P>(size: D::Size, mipmaps: u32) -> Option<String
       match (L::layering(), D::dim()) {
         // 1D texture
         (Layering::Flat, Dim::DIM1) => {
-          create_texture1D_storage(format, iformat, encoding, D::width(size), mipmaps);
+          create_texture_1d_storage(format, iformat, encoding, D::width(size), mipmaps);
           None
         },
         // 2D texture
         (Layering::Flat, Dim::DIM2) => {
-          create_texture2D_storage(format, iformat, encoding, D::width(size), D::height(size), mipmaps);
+          create_texture_2d_storage(format, iformat, encoding, D::width(size), D::height(size), mipmaps);
           None
         },
         // 3D texture
         (Layering::Flat, Dim::DIM3) => {
-          create_texture3D_storage(format, iformat, encoding, D::width(size), D::height(size), D::depth(size), mipmaps);
+          create_texture_3d_storage(format, iformat, encoding, D::width(size), D::height(size), D::depth(size), mipmaps);
           None
         },
         // cubemap
@@ -115,7 +115,7 @@ fn create_texture_storage<L, D, P>(size: D::Size, mipmaps: u32) -> Option<String
   }
 }
 
-fn create_texture1D_storage(format: GLenum, iformat: GLenum, encoding: GLenum, w: u32, mipmaps: u32) {
+fn create_texture_1d_storage(format: GLenum, iformat: GLenum, encoding: GLenum, w: u32, mipmaps: u32) {
   for level in 0..mipmaps {
     let w = w / 2u32.pow(level);
 
@@ -123,7 +123,7 @@ fn create_texture1D_storage(format: GLenum, iformat: GLenum, encoding: GLenum, w
   }
 }
 
-fn create_texture2D_storage(format: GLenum, iformat: GLenum, encoding: GLenum, w: u32, h: u32, mipmaps: u32) {
+fn create_texture_2d_storage(format: GLenum, iformat: GLenum, encoding: GLenum, w: u32, h: u32, mipmaps: u32) {
   for level in 0..mipmaps {
     let div = 2u32.pow(level);
     let w = w / div;
@@ -133,7 +133,7 @@ fn create_texture2D_storage(format: GLenum, iformat: GLenum, encoding: GLenum, w
   }
 }
 
-fn create_texture3D_storage(format: GLenum, iformat: GLenum, encoding: GLenum, w: u32, h: u32, d: u32, mipmaps: u32) {
+fn create_texture_3d_storage(format: GLenum, iformat: GLenum, encoding: GLenum, w: u32, h: u32, d: u32, mipmaps: u32) {
   for level in 0..mipmaps {
     let div = 2u32.pow(level);
     let w = w / div;
