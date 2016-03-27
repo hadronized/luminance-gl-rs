@@ -4,6 +4,7 @@ use gl33::pixel::gl_pixel_format;
 use gl33::token::GL33;
 use luminance::texture::*;
 use luminance::pixel::Pixel;
+use std::os::raw::c_void;
 use std::ptr;
 
 impl HasTexture for GL33 {
@@ -33,10 +34,25 @@ impl HasTexture for GL33 {
     unsafe { gl::DeleteTextures(1, tex) }
   }
 
-  fn clear<P>(tex: &Self::ATex, pixel: &P::Encoding) where P: Pixel {
+  fn clear_part<L, D, P>(tex: &Self::ATex, gen_mipmaps: bool, off: D::Offset, size: D::Size, pixel: &P::Encoding)
+      where L: Layerable, D: Dimensionable, P: Pixel {
   }
 
-  fn upload<P>(tex: &Self::ATex, texels: &Vec<P::Encoding>) where P: Pixel {
+  fn upload_part<L, D, P>(texture: &Self::ATex, gen_mipmaps: bool, off: D::Offset, size: D::Size, texels: &Vec<P::Encoding>)
+      where L: Layerable, D: Dimensionable, P: Pixel {
+    let target = to_target(L::layering(), D::dim());
+
+    unsafe {
+      gl::BindTexture(target, *texture);
+
+      upload_texels::<L, D, P>(target, off, size, texels);
+
+      if gen_mipmaps {
+        gl::GenerateMipmap(target);
+      }
+
+      gl::BindTexture(target, 0);
+    }
   }
 }
 
@@ -94,7 +110,7 @@ fn create_texture1D_storage(format: GLenum, iformat: GLenum, encoding: GLenum, w
   for level in 0..mipmaps {
     let w = w / 2u32.pow(level);
 
-    unsafe { gl::TexImage1D(gl::TEXTURE_1D, level as GLint, iformat as GLint, w as GLint, 0, format, encoding, ptr::null()) };
+    unsafe { gl::TexImage1D(gl::TEXTURE_1D, level as GLint, iformat as GLint, w as GLsizei, 0, format, encoding, ptr::null()) };
   }
 }
 
@@ -104,7 +120,7 @@ fn create_texture2D_storage(format: GLenum, iformat: GLenum, encoding: GLenum, w
     let w = w / div;
     let h = h / div;
 
-    unsafe { gl::TexImage2D(gl::TEXTURE_2D, level as GLint, iformat as GLint, w as GLint, h as GLint, 0, format, encoding, ptr::null()) };
+    unsafe { gl::TexImage2D(gl::TEXTURE_2D, level as GLint, iformat as GLint, w as GLsizei, h as GLsizei, 0, format, encoding, ptr::null()) };
   }
 }
 
@@ -115,7 +131,7 @@ fn create_texture3D_storage(format: GLenum, iformat: GLenum, encoding: GLenum, w
     let h = h / div;
     let d = d / div;
 
-    unsafe { gl::TexImage3D(gl::TEXTURE_3D, level as GLint, iformat as GLint, w as GLint, h as GLint, d as GLint, 0, format, encoding, ptr::null()) };
+    unsafe { gl::TexImage3D(gl::TEXTURE_3D, level as GLint, iformat as GLint, w as GLsizei, h as GLsizei, d as GLsizei, 0, format, encoding, ptr::null()) };
   }
 }
 
@@ -123,7 +139,7 @@ fn create_cubemap_storage(format: GLenum, iformat: GLenum, encoding: GLenum, s: 
   for level in 0..mipmaps {
     let s = s / 2u32.pow(level);
 
-    unsafe { gl::TexImage2D(gl::TEXTURE_CUBE_MAP, level as GLint, iformat as GLint, s as GLint, s as GLint, 0, format, encoding, ptr::null()) };
+    unsafe { gl::TexImage2D(gl::TEXTURE_CUBE_MAP, level as GLint, iformat as GLint, s as GLsizei, s as GLsizei, 0, format, encoding, ptr::null()) };
   }
 }
 
@@ -178,5 +194,28 @@ fn from_depth_comparison(fun: DepthComparison) -> GLenum {
     DepthComparison::LessOrEqual => gl::LEQUAL,
     DepthComparison::Greater => gl::GREATER,
     DepthComparison::GreaterOrEqual => gl::GEQUAL
+  }
+}
+
+
+fn upload_texels<L, D, P>(target: GLenum, off: D::Offset, size: D::Size, texels: &Vec<P::Encoding>)
+    where L: Layerable,
+          D: Dimensionable,
+          P: Pixel {
+  let pf = P::pixel_format();
+
+  match gl_pixel_format(pf) {
+    Some((format, _, encoding)) => {
+      match L::layering() {
+        Layering::Flat => {
+          match D::dim() {
+            Dim::DIM1 => unsafe { gl::TexSubImage1D(target, 0, D::x_offset(&off) as GLint, D::width(&size) as GLsizei, format, encoding, texels.as_ptr() as *const c_void) },
+            _ => panic!("flat dimension not implemented yet")
+          }
+        },
+        Layering::Layered => panic!("Layering::Layered not implemented yet")
+      }
+    },
+    None => panic!("unknown pixel format")
   }
 }
