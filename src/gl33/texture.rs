@@ -2,10 +2,13 @@ use gl;
 use gl::types::*;
 use gl33::pixel::gl_pixel_format;
 use gl33::token::GL33;
-use luminance::texture::*;
+use luminance::texture::{self, DepthComparison, Dim, Dimensionable, Filter, HasTexture, Layerable,
+                         Layering, Sampler, Wrap, dim_capacity};
 use luminance::pixel::Pixel;
 use std::os::raw::c_void;
 use std::ptr;
+
+pub type Texture<L, D, P> = texture::Texture<GL33, L, D, P>;
 
 impl HasTexture for GL33 {
   type ATexture = GLuint;
