@@ -8,9 +8,9 @@ use std::os::raw::c_void;
 use std::ptr;
 
 impl HasTexture for GL33 {
-  type ATex = GLuint;
+  type ATexture = GLuint;
 
-  fn new<L, D, P>(size: D::Size, mipmaps: u32, sampler: &Sampler) -> Self::ATex
+  fn new<L, D, P>(size: D::Size, mipmaps: u32, sampler: &Sampler) -> Self::ATexture
       where L: Layerable,
             D: Dimensionable,
             D::Size: Copy,
@@ -34,16 +34,16 @@ impl HasTexture for GL33 {
     texture
   }
 
-  fn free(tex: &mut Self::ATex) {
+  fn free(tex: &mut Self::ATexture) {
     unsafe { gl::DeleteTextures(1, tex) }
   }
 
-  fn clear_part<L, D, P>(texture: &Self::ATex, gen_mipmaps: bool, off: D::Offset, size: D::Size, pixel: P::Encoding)
+  fn clear_part<L, D, P>(texture: &Self::ATexture, gen_mipmaps: bool, off: D::Offset, size: D::Size, pixel: P::Encoding)
       where L: Layerable, D: Dimensionable, D::Offset: Copy, D::Size: Copy, P: Pixel, P::Encoding: Copy {
     Self::upload_part::<L, D, P>(texture, gen_mipmaps, off, size, &vec![pixel; dim_capacity::<D>(size) as usize])
   }
 
-  fn upload_part<L, D, P>(texture: &Self::ATex, gen_mipmaps: bool, off: D::Offset, size: D::Size, texels: &Vec<P::Encoding>)
+  fn upload_part<L, D, P>(texture: &Self::ATexture, gen_mipmaps: bool, off: D::Offset, size: D::Size, texels: &Vec<P::Encoding>)
       where L: Layerable, D::Offset: Copy, D::Size: Copy, D: Dimensionable, P: Pixel {
     let target = to_target(L::layering(), D::dim());
 
