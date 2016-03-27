@@ -67,15 +67,15 @@ impl HasTexture for GL33 {
 fn to_target(l: Layering, d: Dim) -> GLenum {
   match l {
     Layering::Flat => match d {
-      Dim::DIM1 => gl::TEXTURE_1D,
-      Dim::DIM2 => gl::TEXTURE_2D,
-      Dim::DIM3 => gl::TEXTURE_3D,
+      Dim::Dim1 => gl::TEXTURE_1D,
+      Dim::Dim2 => gl::TEXTURE_2D,
+      Dim::Dim3 => gl::TEXTURE_3D,
       Dim::Cubemap => gl::TEXTURE_CUBE_MAP
     },
     Layering::Layered => match d {
-      Dim::DIM1 => gl::TEXTURE_1D_ARRAY,
-      Dim::DIM2 => gl::TEXTURE_2D_ARRAY,
-      Dim::DIM3 => panic!("3D textures array not supported"),
+      Dim::Dim1 => gl::TEXTURE_1D_ARRAY,
+      Dim::Dim2 => gl::TEXTURE_2D_ARRAY,
+      Dim::Dim3 => panic!("3D textures array not supported"),
       Dim::Cubemap => gl::TEXTURE_CUBE_MAP_ARRAY
     }
   }
@@ -92,17 +92,17 @@ fn create_texture_storage<L, D, P>(size: D::Size, mipmaps: u32) -> Option<String
     Some((format, iformat, encoding)) => {
       match (L::layering(), D::dim()) {
         // 1D texture
-        (Layering::Flat, Dim::DIM1) => {
+        (Layering::Flat, Dim::Dim1) => {
           create_texture_1d_storage(format, iformat, encoding, D::width(size), mipmaps);
           None
         },
         // 2D texture
-        (Layering::Flat, Dim::DIM2) => {
+        (Layering::Flat, Dim::Dim2) => {
           create_texture_2d_storage(format, iformat, encoding, D::width(size), D::height(size), mipmaps);
           None
         },
         // 3D texture
-        (Layering::Flat, Dim::DIM3) => {
+        (Layering::Flat, Dim::Dim3) => {
           create_texture_3d_storage(format, iformat, encoding, D::width(size), D::height(size), D::depth(size), mipmaps);
           None
         },
@@ -223,9 +223,9 @@ fn upload_texels<L, D, P>(target: GLenum, off: D::Offset, size: D::Size, texels:
       match L::layering() {
         Layering::Flat => {
           match D::dim() {
-            Dim::DIM1 => unsafe { gl::TexSubImage1D(target, 0, D::x_offset(off) as GLint, D::width(size) as GLsizei, format, encoding, texels.as_ptr() as *const c_void) },
-            Dim::DIM2 => unsafe { gl::TexSubImage2D(target, 0, D::x_offset(off) as GLint, D::y_offset(off) as GLint, D::width(size) as GLsizei, D::height(size) as GLsizei, format, encoding, texels.as_ptr() as *const c_void) },
-            Dim::DIM3 => unsafe { gl::TexSubImage3D(target, 0, D::x_offset(off) as GLint, D::y_offset(off) as GLint, D::z_offset(off) as GLint, D::width(size) as GLsizei, D::height(size) as GLsizei, D::depth(size) as GLsizei, format, encoding, texels.as_ptr() as *const c_void) },
+            Dim::Dim1 => unsafe { gl::TexSubImage1D(target, 0, D::x_offset(off) as GLint, D::width(size) as GLsizei, format, encoding, texels.as_ptr() as *const c_void) },
+            Dim::Dim2 => unsafe { gl::TexSubImage2D(target, 0, D::x_offset(off) as GLint, D::y_offset(off) as GLint, D::width(size) as GLsizei, D::height(size) as GLsizei, format, encoding, texels.as_ptr() as *const c_void) },
+            Dim::Dim3 => unsafe { gl::TexSubImage3D(target, 0, D::x_offset(off) as GLint, D::y_offset(off) as GLint, D::z_offset(off) as GLint, D::width(size) as GLsizei, D::height(size) as GLsizei, D::depth(size) as GLsizei, format, encoding, texels.as_ptr() as *const c_void) },
             Dim::Cubemap => unsafe { gl::TexSubImage3D(target, 0, D::x_offset(off) as GLint, D::y_offset(off) as GLint, (gl::TEXTURE_CUBE_MAP_POSITIVE_X + D::z_offset(off)) as GLint, D::width(size) as GLsizei, D::width(size) as GLsizei, 1, format, encoding, texels.as_ptr() as *const c_void) }
           }
         },
