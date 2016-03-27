@@ -14,6 +14,7 @@ impl HasTexture for GL33 {
 
     unsafe {
       let target = to_target(L::layering(), D::dim());
+
       gl::GenTextures(1, &mut texture);
 
       gl::BindTexture(target, texture);
