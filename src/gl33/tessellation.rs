@@ -10,8 +10,8 @@ use std::ptr;
 pub type Tessellation = tessellation::Tessellation<GL33>;
 
 impl HasTessellation for GL33 {
-  // closure taking the number of instances to render
-  type Tessellation = Box<Fn(u32)>;
+  // closure taking the point / line size and the number of instances to render
+  type Tessellation = Box<Fn(Option<f32>, u32)>;
 
   fn new<T>(mode: Mode, vertices: &Vec<T>, indices: Option<&Vec<u32>>) -> Self::Tessellation where T: Vertex {
     let mut vao: GLuint = 0;
@@ -40,8 +40,10 @@ impl HasTessellation for GL33 {
 
         gl::BindVertexArray(0);
 
-        Box::new(move |instances| {
+        Box::new(move |size, instances| {
           gl::BindVertexArray(vao);
+
+          set_point_line_size(mode, size);
 
           if instances == 1 {
             gl::DrawElements(from_mode(mode), ind_nb as GLsizei, gl::UNSIGNED_INT, ptr::null());
@@ -54,8 +56,10 @@ impl HasTessellation for GL33 {
       } else {
         gl::BindVertexArray(0);
 
-        Box::new(move |instances| {
+        Box::new(move |size, instances| {
           gl::BindVertexArray(vao);
+
+          set_point_line_size(mode, size);
 
           if instances == 1 {
             gl::DrawArrays(from_mode(mode), 0, vert_nb as GLsizei);
@@ -69,8 +73,8 @@ impl HasTessellation for GL33 {
     }
   }
 
-  fn render(tess: &Self::Tessellation, instances: u32) {
-    tess(instances);
+  fn render(tess: &Self::Tessellation, size: Option<f32>, instances: u32) {
+    tess(size, instances);
   }
 }
 
@@ -134,5 +138,15 @@ fn from_mode(mode: Mode) -> GLenum {
     Mode::Triangle => gl::TRIANGLES,
     Mode::TriangleFan => gl::TRIANGLE_FAN,
     Mode::TriangleStrip => gl::TRIANGLE_STRIP
+  }
+}
+
+fn set_point_line_size(mode: Mode, size: Option<f32>) {
+  let computed = size.unwrap_or(1.);
+
+  match mode {
+    Mode::Point => unsafe { gl::PointSize(computed) },
+    Mode::Line | Mode::LineStrip => unsafe { gl::LineWidth(computed) },
+    _ => {}
   }
 }
