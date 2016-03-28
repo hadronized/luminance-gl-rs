@@ -3,17 +3,17 @@ use gl::types::*;
 use gl33::buffer::Buffer;
 use gl33::token::GL33;
 use luminance::rw::W;
-use luminance::tessellation::{HasTessellation, Mode};
+use luminance::tessellation::{self, HasTessellation, Mode};
 use luminance::vertex::{Dim, Type, Vertex, VertexComponentFormat, VertexFormat};
 use std::ptr;
 
-pub type Tessellation = <GL33 as HasTessellation>::Tessellation;
+pub type Tessellation = tessellation::Tessellation<GL33>;
 
 impl HasTessellation for GL33 {
   // closure taking the number of instances to render
   type Tessellation = Box<Fn(u32)>;
 
-  fn new<T>(mode: Mode, vertices: Vec<T>, indices: Option<Vec<u32>>) -> Self::Tessellation where T: Vertex {
+  fn new<T>(mode: Mode, vertices: &Vec<T>, indices: Option<&Vec<u32>>) -> Self::Tessellation where T: Vertex {
     let mut vao: GLuint = 0;
     let vert_nb = vertices.len();
 
