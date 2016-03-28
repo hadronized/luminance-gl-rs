@@ -13,7 +13,7 @@ pub type Texture<L, D, P> = texture::Texture<GL33, L, D, P>;
 impl HasTexture for GL33 {
   type ATexture = GLuint;
 
-  fn new<L, D, P>(size: D::Size, mipmaps: u32, sampler: &Sampler) -> Self::ATexture
+  fn new_texture<L, D, P>(size: D::Size, mipmaps: u32, sampler: &Sampler) -> Self::ATexture
       where L: Layerable,
             D: Dimensionable,
             D::Size: Copy,
