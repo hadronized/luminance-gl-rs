@@ -53,13 +53,13 @@ impl HasProgram for GL33 {
     unsafe { gl::DeleteProgram(*program) }
   }
 
-  fn map_uniform(program: &Self::Program, name: UniformName) -> Option<Self::U> {
+  fn map_uniform(program: &Self::Program, name: UniformName) -> Result<Self::U, ProgramError> {
     match name {
       UniformName::StringName(name) => {
         let location = unsafe { gl::GetUniformLocation(*program, CString::new(name.as_bytes()).unwrap().as_ptr() as *const GLchar) };
-        if location != -1 { Some(location) } else { None }
+        if location != -1 { Ok(location) } else { Err(ProgramError::InactiveUniform(name)) }
       },
-      UniformName::SemanticName(sem) => { Some(sem as GLint) }
+      UniformName::SemanticName(sem) => { Ok(sem as GLint) }
     }
   }
 
