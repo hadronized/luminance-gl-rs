@@ -7,6 +7,8 @@ use luminance::tessellation::{HasTessellation, Mode};
 use luminance::vertex::{Dim, Type, Vertex, VertexComponentFormat, VertexFormat};
 use std::ptr;
 
+pub type Tessellation = <GL33 as HasTessellation>::Tessellation;
+
 impl HasTessellation for GL33 {
   // closure taking the number of instances to render
   type Tessellation = Box<Fn(u32)>;
