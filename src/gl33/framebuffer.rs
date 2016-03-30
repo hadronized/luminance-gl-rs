@@ -61,7 +61,13 @@ impl HasFramebuffer for GL33 {
   }
 
   fn free_framebuffer(framebuffer: &mut Self::Framebuffer) {
-    unsafe { gl::DeleteFramebuffers(1, &framebuffer.handle) };
+    unsafe {
+      if let Some(renderbuffer) = framebuffer.renderbuffer {
+        gl::DeleteRenderbuffers(1, &renderbuffer);
+      }
+
+      gl::DeleteFramebuffers(1, &framebuffer.handle);
+    }
   }
 
   fn default_framebuffer() -> Self::Framebuffer {
