@@ -5,4 +5,4 @@ authors = ["Dimitri 'phaazon' Sabadie <dimitri.sabadie@gmail.com>"]
 
 [dependencies]
 gl = "0.5.2"
-luminance = { path = "/home/phaazon/dev/luminance-rs" }
+luminance = { path = "../luminance-rs" }
