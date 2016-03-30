@@ -23,11 +23,12 @@ impl HasFramebuffer for GL33 {
     let mut framebuffer: GLuint = 0;
     let color_formats = CS::color_formats();
     let depth_format = DS::depth_format();
+    let target = to_target(L::layering(), D::dim());
+    let mut textures: Vec<Self::ATexture> = Vec::with_capacity(color_formats.len() + if depth_format.is_some() { 1 } else { 0 }); // FIXME: remove that (inference)
+    let mut depth_texture: Option<Self::ATexture> = None;
+    let mut depth_renderbuffer: Option<GLuint> = None;
 
     unsafe {
-      let target = to_target(L::layering(), D::dim());
-      let mut textures: Vec<Self::ATexture> = Vec::with_capacity(color_formats.len() + if depth_format.is_some() { 1 } else { 0 }); // FIXME: remove that (inference)
-
       gl::GenFramebuffers(1, &mut framebuffer);
 
       gl::BindFramebuffer(gl::FRAMEBUFFER, framebuffer);
@@ -39,27 +40,55 @@ impl HasFramebuffer for GL33 {
       if color_formats.is_empty() {
         gl::DrawBuffer(gl::NONE);
       } else {
-        for (format, texture) in color_formats.iter().zip(&textures) {
+        for (i, (format, texture)) in color_formats.iter().zip(&textures).enumerate() {
           gl::BindTexture(target, *texture);
           create_texture::<L, D>(target, size, mipmaps, *format, &Default::default());
+          gl::FramebufferTexture(gl::FRAMEBUFFER, gl::COLOR_ATTACHMENT0 + i as GLenum, *texture, 0);
         }
       }
 
       // depth texture, if exists
       if let Some(format) = depth_format {
-        let depth_texture = textures.pop().unwrap();
+        let texture = textures.pop().unwrap();
 
-        gl::BindTexture(target, depth_texture);
+        gl::BindTexture(target, texture);
         create_texture::<L, D>(target, size, mipmaps, format, &Default::default());
+        gl::FramebufferTexture(gl::FRAMEBUFFER, gl::DEPTH_ATTACHMENT, texture, 0);
+
+        depth_texture = Some(texture);
       } else {
-        // TODO: create render buffer
+        let mut renderbuffer: GLuint = 0;
+
+        gl::GenRenderbuffers(1, &mut renderbuffer);
+        gl::BindRenderbuffer(gl::RENDERBUFFER, renderbuffer);
+        gl::RenderbufferStorage(gl::RENDERBUFFER, gl::DEPTH_COMPONENT32F, D::width(size) as GLsizei, D::height(size) as GLsizei);
+        gl::BindRenderbuffer(gl::RENDERBUFFER, 0);
+
+        gl::FramebufferRenderbuffer(gl::FRAMEBUFFER, gl::DEPTH_ATTACHMENT, gl::RENDERBUFFER, renderbuffer);
+
+        depth_renderbuffer = Some(renderbuffer);
       }
 
       gl::BindTexture(target, 0);
-      gl::BindFramebuffer(gl::FRAMEBUFFER, 0);
-    }
 
-    Err(FramebufferError::Incomplete(String::from("TODO")))
+      match get_status() {
+        Some(incomplete) => {
+          gl::BindFramebuffer(gl::FRAMEBUFFER, 0);
+
+          Err(FramebufferError::Incomplete(incomplete))
+        },
+        None => {
+          gl::BindFramebuffer(gl::FRAMEBUFFER, 0);
+
+          let gl_framebuffer = GLFramebuffer {
+            handle: framebuffer,
+            renderbuffer: depth_renderbuffer
+          };
+
+          Ok((gl_framebuffer, textures, depth_texture))
+        }
+      }
+    }
   }
 
   fn free_framebuffer(framebuffer: &mut Self::Framebuffer) {
@@ -77,5 +106,22 @@ impl HasFramebuffer for GL33 {
       handle: 0,
       renderbuffer: None
     }
+  }
+}
+
+fn get_status() -> Option<String> {
+  let status = unsafe { gl::CheckFramebufferStatus(gl::FRAMEBUFFER) };
+
+  match status {
+    gl::FRAMEBUFFER_COMPLETE => None,
+    gl::FRAMEBUFFER_UNDEFINED => Some(String::from("framebuffer undefined")),
+    gl::FRAMEBUFFER_INCOMPLETE_ATTACHMENT => Some(String::from("incomplete attachment")),
+    gl::FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT => Some(String::from("incomplete missing attachment")),
+    gl::FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER => Some(String::from("incomplete draw buffer")),
+    gl::FRAMEBUFFER_INCOMPLETE_READ_BUFFER => Some(String::from("incomplete read buffer")),
+    gl::FRAMEBUFFER_UNSUPPORTED => Some(String::from("unsupported")),
+    gl::FRAMEBUFFER_INCOMPLETE_MULTISAMPLE => Some(String::from("incomplete multisample")),
+    gl::FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS => Some(String::from("incomplete layer targets")),
+    _ => Some(String::from("unknown"))
   }
 }
