@@ -27,6 +27,7 @@ impl HasTexture for GL33 {
 
       gl::BindTexture(target, texture);
 
+      create_texture::<L, D, P>(target, size, mipmaps, sampler);
       set_texture_levels(target, mipmaps);
       apply_sampler_to_texture(target, sampler);
       create_texture_storage::<L, D, P>(size, mipmaps);
@@ -64,7 +65,17 @@ impl HasTexture for GL33 {
   }
 }
 
-fn to_target(l: Layering, d: Dim) -> GLenum {
+fn create_texture<L, D, P>(target: GLenum, size: D::Size, mipmaps: u32, sampler: &Sampler)
+    where L: Layerable,
+          D: Dimensionable,
+          D::Size: Copy,
+          P: Pixel {
+  set_texture_levels(target, mipmaps);
+  apply_sampler_to_texture(target, sampler);
+  create_texture_storage::<L, D, P>(size, mipmaps);
+}
+
+pub fn to_target(l: Layering, d: Dim) -> GLenum {
   match l {
     Layering::Flat => match d {
       Dim::Dim1 => gl::TEXTURE_1D,
