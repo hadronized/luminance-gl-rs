@@ -2,9 +2,11 @@ use gl;
 use gl::types::*;
 use gl33::texture::{create_texture, to_target};
 use gl33::token::GL33;
-use luminance::framebuffer::{ColorSlot, DepthSlot, FramebufferError, HasFramebuffer};
+use luminance::framebuffer::{self, ColorSlot, DepthSlot, FramebufferError, HasFramebuffer};
 use luminance::texture::{Dimensionable, Layerable};
 use std::default::Default;
+
+pub type Framebuffer<L, D, CS, DS> = framebuffer::Framebuffer<GL33, L, D, CS, DS>;
 
 pub struct GLFramebuffer {
   pub handle: GLuint,
