@@ -7,8 +7,8 @@ use luminance::texture::{Dimensionable, Layerable};
 use std::default::Default;
 
 pub struct GLFramebuffer {
-  handle: GLuint,
-  renderbuffer: Option<GLuint>
+  pub handle: GLuint,
+  pub renderbuffer: Option<GLuint>
 }
 
 impl HasFramebuffer for GL33 {
@@ -26,6 +26,8 @@ impl HasFramebuffer for GL33 {
     let depth_format = DS::depth_format();
 
     unsafe {
+      let target = to_target(L::layering(), D::dim());
+
       gl::GenFramebuffers(1, &mut framebuffer);
 
       gl::BindFramebuffer(gl::FRAMEBUFFER, framebuffer);
@@ -34,18 +36,24 @@ impl HasFramebuffer for GL33 {
       gl::GenTextures((color_formats.len() + if depth_format.is_some() { 1 } else { 0 }) as GLint, &mut textures);
 
       // color textures
-      for (i, format) in color_formats.iter().enumerate() {
-        let target = to_target(L::layering(), D::dim());
-
-        gl::BindTexture(target, textures + i as GLuint);
-        create_texture::<L, D>(target, size, mipmaps, *format, &Default::default());
-        gl::BindTexture(target, 0);
+      if color_formats.is_empty() {
+        gl::DrawBuffer(gl::NONE);
+      } else {
+        for (i, format) in color_formats.iter().enumerate() {
+          gl::BindTexture(target, textures + i as GLuint);
+          create_texture::<L, D>(target, size, mipmaps, *format, &Default::default());
+        }
       }
 
-      // depth texture, eventually
-      if let Some(depth_format) = depth_format {
+      // depth texture, if exists
+      if let Some(format) = depth_format {
+        gl::BindTexture(target, textures + color_formats.len() as GLuint);
+        create_texture::<L, D>(target, size, mipmaps, format, &Default::default());
+      } else {
+        // TODO: create render buffer
       }
 
+      gl::BindTexture(target, 0);
       gl::BindFramebuffer(gl::FRAMEBUFFER, 0);
     }
 
