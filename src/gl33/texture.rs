@@ -4,7 +4,7 @@ use gl33::pixel::gl_pixel_format;
 use gl33::token::GL33;
 use luminance::texture::{self, DepthComparison, Dim, Dimensionable, Filter, HasTexture, Layerable,
                          Layering, Sampler, Wrap, dim_capacity};
-use luminance::pixel::Pixel;
+use luminance::pixel::{Pixel, PixelFormat};
 use std::os::raw::c_void;
 use std::ptr;
 
@@ -26,7 +26,7 @@ impl HasTexture for GL33 {
       gl::GenTextures(1, &mut texture);
 
       gl::BindTexture(target, texture);
-      create_texture::<L, D, P>(target, size, mipmaps, sampler);
+      create_texture::<L, D>(target, size, mipmaps, P::pixel_format(), sampler);
       gl::BindTexture(target, 0);
     }
 
@@ -60,14 +60,13 @@ impl HasTexture for GL33 {
   }
 }
 
-fn create_texture<L, D, P>(target: GLenum, size: D::Size, mipmaps: u32, sampler: &Sampler)
+pub fn create_texture<L, D>(target: GLenum, size: D::Size, mipmaps: u32, pf: PixelFormat, sampler: &Sampler)
     where L: Layerable,
           D: Dimensionable,
-          D::Size: Copy,
-          P: Pixel {
+          D::Size: Copy {
   set_texture_levels(target, mipmaps);
   apply_sampler_to_texture(target, sampler);
-  create_texture_storage::<L, D, P>(size, mipmaps);
+  create_texture_storage::<L, D>(size, mipmaps, pf);
 }
 
 pub fn to_target(l: Layering, d: Dim) -> GLenum {
@@ -87,13 +86,10 @@ pub fn to_target(l: Layering, d: Dim) -> GLenum {
   }
 }
 
-fn create_texture_storage<L, D, P>(size: D::Size, mipmaps: u32) -> Option<String>
+fn create_texture_storage<L, D>(size: D::Size, mipmaps: u32, pf: PixelFormat) -> Option<String>
     where L: Layerable,
           D: Dimensionable,
-          D::Size: Copy,
-          P: Pixel {
-  let pf = P::pixel_format();
-
+          D::Size: Copy {
   match gl_pixel_format(pf) {
     Some((format, iformat, encoding)) => {
       match (L::layering(), D::dim()) {

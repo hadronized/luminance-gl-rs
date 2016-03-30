@@ -1,9 +1,10 @@
 use gl;
 use gl::types::*;
-use gl33::texture::to_target;
+use gl33::texture::{create_texture, to_target};
 use gl33::token::GL33;
 use luminance::framebuffer::{ColorSlot, DepthSlot, FramebufferError, HasFramebuffer};
 use luminance::texture::{Dimensionable, Layerable};
+use std::default::Default;
 
 pub struct GLFramebuffer {
   handle: GLuint,
@@ -34,9 +35,11 @@ impl HasFramebuffer for GL33 {
 
       // color textures
       for (i, format) in color_formats.iter().enumerate() {
-        gl::BindTexture(to_target(L::layering(), D::dim()), textures + i as GLuint);
+        let target = to_target(L::layering(), D::dim());
 
-        gl::BindTexture(to_target(L::layering(), D::dim()), 0);
+        gl::BindTexture(target, textures + i as GLuint);
+        create_texture::<L, D>(target, size, mipmaps, *format, &Default::default());
+        gl::BindTexture(target, 0);
       }
 
       // depth texture, eventually
