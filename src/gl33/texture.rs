@@ -26,12 +26,7 @@ impl HasTexture for GL33 {
       gl::GenTextures(1, &mut texture);
 
       gl::BindTexture(target, texture);
-
       create_texture::<L, D, P>(target, size, mipmaps, sampler);
-      set_texture_levels(target, mipmaps);
-      apply_sampler_to_texture(target, sampler);
-      create_texture_storage::<L, D, P>(size, mipmaps);
-
       gl::BindTexture(target, 0);
     }
 
