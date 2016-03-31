@@ -73,19 +73,22 @@ impl HasFramebuffer for GL33 {
 
       gl::BindTexture(target, 0);
 
+      let mut gl_framebuffer = GLFramebuffer {
+        handle: framebuffer,
+        renderbuffer: depth_renderbuffer
+      };
+
       match get_status() {
         Some(incomplete) => {
           gl::BindFramebuffer(gl::FRAMEBUFFER, 0);
+
+          Self::free_framebuffer(&mut gl_framebuffer);
 
           Err(FramebufferError::Incomplete(incomplete))
         },
         None => {
           gl::BindFramebuffer(gl::FRAMEBUFFER, 0);
 
-          let gl_framebuffer = GLFramebuffer {
-            handle: framebuffer,
-            renderbuffer: depth_renderbuffer
-          };
 
           Ok((gl_framebuffer, textures, depth_texture))
         }
