@@ -90,7 +90,6 @@ impl HasFramebuffer for GL33 {
         None => {
           gl::BindFramebuffer(gl::FRAMEBUFFER, 0);
 
-
           Ok((gl_framebuffer, textures, depth_texture))
         }
       }
