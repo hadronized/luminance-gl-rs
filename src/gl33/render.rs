@@ -8,7 +8,7 @@ use luminance::texture::{Dimensionable, Layerable};
 
 pub type FrameCommand<'a, L, D, CS, DS> = render::FrameCommand<'a, GL33, L, D, CS, DS>;
 pub type ShadingCommand<'a> = render::ShadingCommand<'a, GL33>;
-pub type RenderCommand = render::RenderCommand<GL33>;
+pub type RenderCommand<'a> = render::RenderCommand<'a, GL33>;
 
 impl HasFrameCommand for GL33 {
   fn run_frame_command<L, D, CS, DS>(cmd: render::FrameCommand<Self, L, D, CS, DS>)
@@ -20,7 +20,7 @@ impl HasFrameCommand for GL33 {
     unsafe { gl::BindFramebuffer(gl::FRAMEBUFFER, cmd.framebuffer.repr.handle) };
 
     for shading_cmd in cmd.shading_commands {
-      unsafe { gl::UseProgram(shading_cmd.program) };
+      unsafe { gl::UseProgram(*shading_cmd.program) };
 
       (shading_cmd.update)();
 
@@ -28,7 +28,7 @@ impl HasFrameCommand for GL33 {
         set_blending(render_cmd.blending);
         set_depth_test(render_cmd.depth_test);
         (render_cmd.update)();
-        (render_cmd.tessellation)(render_cmd.rasterization_size, render_cmd.instances);
+        (render_cmd.tessellation.repr)(render_cmd.rasterization_size, render_cmd.instances);
       }
     }
   }
