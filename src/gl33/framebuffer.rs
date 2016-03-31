@@ -7,6 +7,7 @@ use luminance::texture::{Dimensionable, Layerable};
 use std::default::Default;
 
 pub type Framebuffer<L, D, CS, DS> = framebuffer::Framebuffer<GL33, L, D, CS, DS>;
+pub type Slot<L, D, P> = framebuffer::Slot<GL33, L, D, P>;
 
 pub struct GLFramebuffer {
   pub handle: GLuint,
