@@ -27,7 +27,7 @@ impl HasFramebuffer for GL33 {
     let color_formats = CS::color_formats();
     let depth_format = DS::depth_format();
     let target = to_target(L::layering(), D::dim());
-    let mut textures: Vec<Self::ATexture> = Vec::with_capacity(color_formats.len() + if depth_format.is_some() { 1 } else { 0 }); // FIXME: remove that (inference)
+    let mut textures: Vec<Self::ATexture> = vec![0; (color_formats.len() + if depth_format.is_some() { 1 } else { 0 })]; // FIXME: remove that (inference)
     let mut depth_texture: Option<Self::ATexture> = None;
     let mut depth_renderbuffer: Option<GLuint> = None;
 
