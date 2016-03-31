@@ -72,10 +72,6 @@ impl HasTessellation for GL33 {
       }
     }
   }
-
-  fn render(tess: &Self::Tessellation, size: Option<f32>, instances: u32) {
-    tess(size, instances);
-  }
 }
 
 fn set_vertex_pointers(formats: &VertexFormat) {
