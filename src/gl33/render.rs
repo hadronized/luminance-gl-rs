@@ -17,7 +17,10 @@ impl HasFrameCommand for GL33 {
           D::Size: Copy,
           CS: ColorSlot<Self, L, D>,
           DS: DepthSlot<Self, L, D> {
-    unsafe { gl::BindFramebuffer(gl::FRAMEBUFFER, cmd.framebuffer.repr.handle) };
+    unsafe {
+      gl::BindFramebuffer(gl::FRAMEBUFFER, cmd.framebuffer.repr.handle);
+      gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
+    }
 
     for shading_cmd in cmd.shading_commands {
       unsafe { gl::UseProgram(*shading_cmd.program) };
