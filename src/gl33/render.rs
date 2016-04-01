@@ -11,7 +11,7 @@ pub type ShadingCommand<'a> = render::ShadingCommand<'a, GL33>;
 pub type RenderCommand<'a> = render::RenderCommand<'a, GL33>;
 
 impl HasFrameCommand for GL33 {
-  fn run_frame_command<L, D, CS, DS>(cmd: render::FrameCommand<Self, L, D, CS, DS>)
+  fn run_frame_command<L, D, CS, DS>(cmd: &render::FrameCommand<Self, L, D, CS, DS>)
     where L: Layerable,
           D: Dimensionable,
           D::Size: Copy,
