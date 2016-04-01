@@ -1,3 +1,4 @@
+use core::mem;
 use gl;
 use gl::types::*;
 use gl33::buffer::Buffer;
@@ -119,10 +120,10 @@ fn vertex_weight(formats: &VertexFormat) -> usize {
 
 fn component_type_weight(t: &Type) -> usize {
   match *t {
-    Type::Integral => 4,
-    Type::Unsigned => 4,
-    Type::Floating => 4,
-    Type::Boolean => 1
+    Type::Integral => mem::size_of::<i32>(),
+    Type::Unsigned => mem::size_of::<u32>(),
+    Type::Floating => mem::size_of::<f32>(),
+    Type::Boolean => mem::size_of::<bool>()
   }
 }
 
