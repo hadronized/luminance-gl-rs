@@ -76,10 +76,10 @@ impl HasTessellation for GL33 {
 }
 
 fn set_vertex_pointers(formats: &VertexFormat) {
-  let stride = vertex_weight(formats) as GLsizei;
+  let vertex_weight = vertex_weight(formats) as GLsizei;
 
   for (i, format) in formats.iter().enumerate() {
-    set_component_format(i as u32, stride, format);
+    set_component_format(i as u32, vertex_weight, format);
   }
 }
 
@@ -109,13 +109,11 @@ fn from_type(t: &Type) -> GLenum {
 }
 
 fn vertex_weight(formats: &VertexFormat) -> usize {
-  let mut weight: usize = 0;
+  formats.iter().fold(0, |a, f| a + component_weight(f))
+}
 
-  for f in formats {
-    weight += from_dim(&f.dim) as usize * component_type_weight(&f.component_type);
-  }
-
-  weight
+fn component_weight(f: &VertexComponentFormat) -> usize {
+  from_dim(&f.dim) as usize * component_type_weight(&f.component_type)
 }
 
 fn component_type_weight(t: &Type) -> usize {
