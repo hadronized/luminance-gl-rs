@@ -22,12 +22,12 @@ impl HasFrameCommand for GL33 {
       gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
     }
 
-    for shading_cmd in cmd.shading_commands {
+    for shading_cmd in &cmd.shading_commands {
       unsafe { gl::UseProgram(*shading_cmd.program) };
 
       (shading_cmd.update)();
 
-      for render_cmd in shading_cmd.render_commands {
+      for render_cmd in &shading_cmd.render_commands {
         set_blending(render_cmd.blending);
         set_depth_test(render_cmd.depth_test);
         (render_cmd.update)();
