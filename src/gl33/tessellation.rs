@@ -16,7 +16,7 @@ impl HasTessellation for GL33 {
   // closure taking the point / line size and the number of instances to render
   type Tessellation = Box<Fn(Option<f32>, u32)>;
 
-  fn new<T>(mode: Mode, vertices: &Vec<T>, indices: Option<&Vec<u32>>) -> Self::Tessellation where T: Vertex {
+  fn new<T>(mode: Mode, vertices: &[T], indices: Option<&Vec<u32>>) -> Self::Tessellation where T: Vertex {
     let mut vao: GLuint = 0;
     let vert_nb = vertices.len();
 
@@ -27,7 +27,7 @@ impl HasTessellation for GL33 {
 
       // vertex buffer
       let vertex_buffer = Buffer::new(W, vert_nb);
-      vertex_buffer.fill(&vertices);
+      vertex_buffer.fill(vertices);
 
       gl::BindBuffer(gl::ARRAY_BUFFER, vertex_buffer.repr.handle);
       set_vertex_pointers(&T::vertex_format());

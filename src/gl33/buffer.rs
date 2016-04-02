@@ -38,7 +38,7 @@ impl buffer::HasBuffer for GL33 {
     unsafe { gl::DeleteBuffers(1, &buffer.handle) }
   }
 
-  fn write_whole<T>(buffer: &GLBuffer, values: &Vec<T>) -> Result<(), buffer::BufferError> {
+  fn write_whole<T>(buffer: &GLBuffer, values: &[T]) -> Result<(), buffer::BufferError> {
     let bytes = values.len() * mem::size_of::<T>();
 
     // generate warning and recompute the proper number of bytes to copy
