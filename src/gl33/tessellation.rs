@@ -4,11 +4,9 @@ use gl::types::*;
 use gl33::buffer::Buffer;
 use gl33::token::GL33;
 use luminance::rw::W;
-use luminance::tessellation::{self, HasTessellation};
+use luminance::tessellation::{self, HasTessellation, Mode};
 use luminance::vertex::{Dim, Type, Vertex, VertexComponentFormat, VertexFormat};
 use std::ptr;
-
-pub use luminance::tessellation::Mode;
 
 pub type Tessellation = tessellation::Tessellation<GL33>;
 
