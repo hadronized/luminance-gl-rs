@@ -15,21 +15,12 @@ impl HasStage for GL33 {
   type AStage = GLuint;
 
   fn new_shader(shader_type: Type, src: &str) -> Result<Self::AStage, StageError> {
-    // FIXME: check for GL_ARB_tessellation_shader extension if we need tessellation shaders
-    let shader_type = match shader_type {
-      Type::TessellationControlShader => gl::TESS_CONTROL_SHADER,
-      Type::TessellationEvaluationShader => gl::TESS_EVALUATION_SHADER,
-      Type::VertexShader => gl::VERTEX_SHADER,
-      Type::GeometryShader => gl::GEOMETRY_SHADER,
-      Type::FragmentShader => gl::FRAGMENT_SHADER
-    };
-
     unsafe {
       let src = CString::new(glsl_pragma_src(src).as_bytes()).unwrap();
-      let handle = gl::CreateShader(shader_type);
+      let handle = gl::CreateShader(from_shader_type(shader_type));
 
       if handle == 0 {
-        return Err(StageError::CompilationFailed(String::from("unable to create shader stage")));
+        return Err(StageError::CompilationFailed(shader_type, String::from("unable to create shader stage")));
       }
 
       gl::ShaderSource(handle, 1, [src.as_ptr()].as_ptr(), null());
@@ -48,13 +39,24 @@ impl HasStage for GL33 {
         gl::GetShaderInfoLog(handle, log_len, null_mut(), log.as_mut_ptr() as *mut GLchar);
 
         log.set_len(log_len as usize);
-        Err(StageError::CompilationFailed(String::from_utf8(log).unwrap()))
+        Err(StageError::CompilationFailed(shader_type, String::from_utf8(log).unwrap()))
       }
     }
   }
 
   fn free_shader(shader: &mut Self::AStage) {
     unsafe { gl::DeleteShader(*shader) }
+  }
+}
+
+// FIXME: check for GL_ARB_tessellation_shader extension if we need tessellation shaders
+fn from_shader_type(t: Type) -> GLenum {
+  match t {
+    Type::TessellationControlShader => gl::TESS_CONTROL_SHADER,
+    Type::TessellationEvaluationShader => gl::TESS_EVALUATION_SHADER,
+    Type::VertexShader => gl::VERTEX_SHADER,
+    Type::GeometryShader => gl::GEOMETRY_SHADER,
+    Type::FragmentShader => gl::FRAGMENT_SHADER
   }
 }
 
