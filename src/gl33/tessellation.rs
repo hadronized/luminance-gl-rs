@@ -14,7 +14,7 @@ impl HasTessellation for GL33 {
   // closure taking the point / line size and the number of instances to render
   type Tessellation = Box<Fn(Option<f32>, u32)>;
 
-  fn new<T>(mode: Mode, vertices: &[T], indices: Option<&Vec<u32>>) -> Self::Tessellation where T: Vertex {
+  fn new<T>(mode: Mode, vertices: &[T], indices: Option<&[u32]>) -> Self::Tessellation where T: Vertex {
     let mut vao: GLuint = 0;
     let vert_nb = vertices.len();
 
