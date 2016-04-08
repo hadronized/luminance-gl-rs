@@ -31,7 +31,7 @@ impl HasFrameCommand for GL33 {
         set_blending(render_cmd.blending);
         set_depth_test(render_cmd.depth_test);
         (render_cmd.update)();
-        (render_cmd.tessellation.repr)(render_cmd.rasterization_size, render_cmd.instances);
+        (render_cmd.tessellation.repr.render)(render_cmd.rasterization_size, render_cmd.instances);
       }
     }
   }

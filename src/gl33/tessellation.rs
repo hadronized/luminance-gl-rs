@@ -1,4 +1,3 @@
-use core::mem;
 use gl;
 use gl::types::*;
 use gl33::buffer::Buffer;
@@ -6,15 +5,22 @@ use gl33::token::GL33;
 use luminance::rw::W;
 use luminance::tessellation::{self, HasTessellation, Mode};
 use luminance::vertex::{Dim, Type, Vertex, VertexComponentFormat, VertexFormat};
+use std::mem;
 use std::ptr;
 
 pub type Tessellation = tessellation::Tessellation<GL33>;
 
-impl HasTessellation for GL33 {
+pub struct GLTess {
   // closure taking the point / line size and the number of instances to render
-  type Tessellation = Box<Fn(Option<f32>, u32)>;
+  pub render: Box<Fn(Option<f32>, u32)>,
+  vao: GLenum,
+  buffers: Vec<GLenum>
+}
 
-  fn new<T>(mode: Mode, vertices: &[T], indices: Option<&[u32]>) -> Self::Tessellation where T: Vertex {
+impl HasTessellation for GL33 {
+  type Tessellation = GLTess;
+
+  fn new<T: 'static>(mode: Mode, vertices: &[T], indices: Option<&[u32]>) -> Self::Tessellation where T: Vertex {
     let mut vao: GLuint = 0;
     let vert_nb = vertices.len();
 
@@ -26,51 +32,70 @@ impl HasTessellation for GL33 {
       // vertex buffer
       let vertex_buffer = Buffer::new(W, vert_nb);
       vertex_buffer.fill(vertices);
+      let vbo = vertex_buffer.repr.handle;
+      mem::forget(vertex_buffer);
 
-      gl::BindBuffer(gl::ARRAY_BUFFER, vertex_buffer.repr.handle);
+      gl::BindBuffer(gl::ARRAY_BUFFER, vbo);
       set_vertex_pointers(&T::vertex_format());
 
       // in case of indexed render, create the required objects
       if let Some(indices) = indices {
         let ind_nb = indices.len();
         let index_buffer = Buffer::new(W, ind_nb);
-
         index_buffer.fill(&indices);
+        let ibo = index_buffer.repr.handle;
+        mem::forget(index_buffer);
 
-        gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, index_buffer.repr.handle);
+        gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, ibo);
 
         gl::BindVertexArray(0);
 
-        Box::new(move |size, instances| {
-          gl::BindVertexArray(vao);
+        GLTess {
+          render: Box::new(move |size, instances| {
+            gl::BindVertexArray(vao);
 
-          set_point_line_size(mode, size);
+            set_point_line_size(mode, size);
 
-          if instances == 1 {
-            gl::DrawElements(from_mode(mode), ind_nb as GLsizei, gl::UNSIGNED_INT, ptr::null());
-          } else if instances > 1 {
-            gl::DrawElementsInstanced(from_mode(mode), ind_nb as GLsizei, gl::UNSIGNED_INT, ptr::null(), instances as GLsizei);
-          } else {
-            panic!("cannot index-render 0 instance");
-          }
-        })
+            if instances == 1 {
+              gl::DrawElements(from_mode(mode), ind_nb as GLsizei, gl::UNSIGNED_INT, ptr::null());
+            } else if instances > 1 {
+              gl::DrawElementsInstanced(from_mode(mode), ind_nb as GLsizei, gl::UNSIGNED_INT, ptr::null(), instances as GLsizei);
+            } else {
+              panic!("cannot index-render 0 instance");
+            }
+          }),
+          vao: vao,
+          buffers: vec![vbo, ibo]
+        }
       } else {
         gl::BindVertexArray(0);
 
-        Box::new(move |size, instances| {
-          gl::BindVertexArray(vao);
+        GLTess {
+          render: Box::new(move |size, instances| {
+            gl::BindVertexArray(vao);
 
-          set_point_line_size(mode, size);
+            set_point_line_size(mode, size);
 
-          if instances == 1 {
-            gl::DrawArrays(from_mode(mode), 0, vert_nb as GLsizei);
-          } else if instances > 1 {
-            gl::DrawArraysInstanced(from_mode(mode), 0, vert_nb as GLsizei, instances as GLsizei);
-          } else {
-            panic!("cannot render 0 instance");
-          }
-        })
+            if instances == 1 {
+              gl::DrawArrays(from_mode(mode), 0, vert_nb as GLsizei);
+            } else if instances > 1 {
+              gl::DrawArraysInstanced(from_mode(mode), 0, vert_nb as GLsizei, instances as GLsizei);
+            } else {
+              panic!("cannot render 0 instance");
+            }
+          }),
+          vao: vao,
+          buffers: vec![vbo]
+        }
       }
+    }
+  }
+
+  fn destroy(tessellation: &mut Self::Tessellation) {
+    // delete vertex array and all bound buffers
+    unsafe {
+      gl::DeleteVertexArrays(1, &tessellation.vao);
+      gl::DeleteBuffers(tessellation.buffers.len() as GLsizei, tessellation.buffers.as_ptr());
     }
   }
 }
