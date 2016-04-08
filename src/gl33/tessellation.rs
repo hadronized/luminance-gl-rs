@@ -32,6 +32,9 @@ impl HasTessellation for GL33 {
       // vertex buffer
       let vertex_buffer = Buffer::new(W, vert_nb);
       vertex_buffer.fill(vertices);
+
+      // once the vertex buffer is filled, we get its internal representation’s handle and we leak
+      // it so that it’s not dropped at the end of the scope
       let vbo = vertex_buffer.repr.handle;
       mem::forget(vertex_buffer);
 
@@ -43,6 +46,8 @@ impl HasTessellation for GL33 {
         let ind_nb = indices.len();
         let index_buffer = Buffer::new(W, ind_nb);
         index_buffer.fill(&indices);
+
+        // same than vertex buffer, once the index buffer is filled, we leak it to the void
         let ibo = index_buffer.repr.handle;
         mem::forget(index_buffer);
 
