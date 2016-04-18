@@ -1,6 +1,7 @@
 use gl;
 use gl::types::*;
 use gl33::token::GL33;
+use luminance::linear::*;
 use luminance::shader::uniform;
 
 pub type Uniform<T> = uniform::Uniform<GL33, T>;
@@ -104,27 +105,27 @@ impl uniform::HasUniform for GL33 {
     unsafe { gl::Uniform4fv(*u, v.len() as GLsizei, v.as_ptr() as *const f32) }
   }
 
-  fn update22_f32(u: &Self::U, m: ((f32, f32), (f32, f32))) {
+  fn update22_f32(u: &Self::U, m: M22) {
     Self::update22_vec_f32(u, &vec![m])
   }
 
-  fn update33_f32(u: &Self::U, m: ((f32, f32, f32), (f32, f32, f32), (f32, f32, f32))) {
+  fn update33_f32(u: &Self::U, m: M33) {
     Self::update33_vec_f32(u, &vec![m])
   }
 
-  fn update44_f32(u: &Self::U, m: ((f32, f32, f32, f32), (f32, f32, f32, f32), (f32, f32, f32, f32), (f32, f32, f32, f32))) {
+  fn update44_f32(u: &Self::U, m: M44) {
     Self::update44_vec_f32(u, &vec![m])
   }
 
-  fn update22_vec_f32(u: &Self::U, v: &Vec<((f32, f32), (f32, f32))>) {
+  fn update22_vec_f32(u: &Self::U, v: &Vec<M22>) {
     unsafe { gl::UniformMatrix2fv(*u, v.len() as GLsizei, gl::FALSE, v.as_ptr() as *const f32) }
   }
 
-  fn update33_vec_f32(u: &Self::U, v: &Vec<((f32, f32, f32), (f32, f32, f32), (f32, f32, f32))>) {
+  fn update33_vec_f32(u: &Self::U, v: &Vec<M33>) {
     unsafe { gl::UniformMatrix3fv(*u, v.len() as GLsizei, gl::FALSE, v.as_ptr() as *const f32) }
   }
 
-  fn update44_vec_f32(u: &Self::U, v: &Vec<((f32, f32, f32, f32), (f32, f32, f32, f32), (f32, f32, f32, f32), (f32, f32, f32, f32))>) {
+  fn update44_vec_f32(u: &Self::U, v: &Vec<M44>) {
     unsafe { gl::UniformMatrix4fv(*u, v.len() as GLsizei, gl::FALSE, v.as_ptr() as *const f32) }
   }
 
