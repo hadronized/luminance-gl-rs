@@ -6,8 +6,6 @@ use luminance::framebuffer::{self, ColorSlot, DepthSlot, FramebufferError, HasFr
 use luminance::texture::{Dimensionable, Layerable};
 use std::default::Default;
 
-pub use luminance::framebuffer::default_framebuffer;
-
 pub type Framebuffer<L, D, CS, DS> = framebuffer::Framebuffer<GL33, L, D, CS, DS>;
 pub type Slot<L, D, P> = framebuffer::Slot<GL33, L, D, P>;
 
