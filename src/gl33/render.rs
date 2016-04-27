@@ -17,8 +17,11 @@ impl HasFrameCommand for GL33 {
           D::Size: Copy,
           CS: ColorSlot<Self, L, D>,
           DS: DepthSlot<Self, L, D> {
+    let clear_color = cmd.clear_color;
+
     unsafe {
       gl::BindFramebuffer(gl::FRAMEBUFFER, cmd.framebuffer.repr.handle);
+      gl::ClearColor(clear_color[0], clear_color[1], clear_color[2], clear_color[3]);
       gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
     }
 
