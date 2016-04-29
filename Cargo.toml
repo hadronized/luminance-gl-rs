@@ -13,4 +13,4 @@ readme = "README.md"
 
 [dependencies]
 gl = "0.5.2"
-luminance = { git = "https://github.com/phaazon/luminance-rs" }
+luminance = "0.1.0"
