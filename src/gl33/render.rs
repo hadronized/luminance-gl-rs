@@ -70,13 +70,13 @@ fn from_blending_factor(factor: blending::Factor) -> GLenum {
     blending::Factor::One => gl::ONE,
     blending::Factor::Zero => gl::ZERO,
     blending::Factor::SrcColor => gl::SRC_COLOR,
-    blending::Factor::NegativeSrcColor => gl::ONE_MINUS_SRC_COLOR,
+    blending::Factor::SrcColorComplement => gl::ONE_MINUS_SRC_COLOR,
     blending::Factor::DestColor => gl::DST_COLOR,
-    blending::Factor::NegativeDestColor => gl::ONE_MINUS_DST_COLOR,
+    blending::Factor::DestColorComplement => gl::ONE_MINUS_DST_COLOR,
     blending::Factor::SrcAlpha => gl::SRC_ALPHA,
-    blending::Factor::NegativeSrcAlpha => gl::ONE_MINUS_SRC_ALPHA,
+    blending::Factor::SrcAlphaComplement => gl::ONE_MINUS_SRC_ALPHA,
     blending::Factor::DstAlpha => gl::DST_ALPHA,
-    blending::Factor::NegativeDstAlpha => gl::ONE_MINUS_DST_ALPHA,
+    blending::Factor::DstAlphaComplement => gl::ONE_MINUS_DST_ALPHA,
     blending::Factor::SrcAlphaSaturate => gl::SRC_ALPHA_SATURATE
   }
 }
