@@ -2,7 +2,6 @@ use gl;
 use gl::types::*;
 use gl33::buffer::Buffer;
 use gl33::token::GL33;
-use luminance::rw::W;
 use luminance::tessellation::{self, HasTessellation, Mode};
 use luminance::vertex::{Dim, Type, Vertex, VertexComponentFormat, VertexFormat};
 use std::mem;
@@ -30,7 +29,7 @@ impl HasTessellation for GL33 {
       gl::BindVertexArray(vao);
 
       // vertex buffer
-      let vertex_buffer = Buffer::new(W, vert_nb);
+      let vertex_buffer = Buffer::new(vert_nb);
       vertex_buffer.fill(vertices);
 
       // once the vertex buffer is filled, we get its internal representation’s handle and we leak
@@ -44,7 +43,7 @@ impl HasTessellation for GL33 {
       // in case of indexed render, create the required objects
       if let Some(indices) = indices {
         let ind_nb = indices.len();
-        let index_buffer = Buffer::new(W, ind_nb);
+        let index_buffer = Buffer::new(ind_nb);
         index_buffer.fill(&indices);
 
         // same than vertex buffer, once the index buffer is filled, we leak it to the void
