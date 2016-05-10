@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/phaazon/luminance-gl-rs.svg?branch=master)](https://travis-ci.org/phaazon/luminance-gl-rs)
 ![crates.io](https://img.shields.io/badge/crates.io-0.1.0-green.svg?style=flat)
 ![License](https://img.shields.io/badge/license-BSD3-blue.svg?style=flat)
 
