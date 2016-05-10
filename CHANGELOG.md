@@ -1,6 +1,10 @@
-### 0.3.1
+### 0.3.2
 
 - Added `ProgramProxy` in the export list of lib.rs.
+
+### 0.3.1
+
+- Added `ProgramProxy` alias.
 
 ## 0.3.0
 
