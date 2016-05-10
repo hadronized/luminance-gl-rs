@@ -7,7 +7,7 @@ use luminance::shader::uniform::UniformName;
 use std::ffi::CString;
 use std::ptr::null_mut;
 
-pub type Program = program::Program<GL33>;
+pub type Program<T> = program::Program<GL33, T>;
 
 impl HasProgram for GL33 {
   type Program = GLuint;
