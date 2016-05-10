@@ -8,6 +8,7 @@ use std::ffi::CString;
 use std::ptr::null_mut;
 
 pub type Program<T> = program::Program<GL33, T>;
+pub type ProgramProxy<'a> = program::ProgramProxy<'a, GL33>;
 
 impl HasProgram for GL33 {
   type Program = GLuint;

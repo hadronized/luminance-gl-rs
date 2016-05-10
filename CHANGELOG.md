@@ -1,3 +1,7 @@
+### 0.3.1
+
+- Added `ProgramProxy` in the export list of lib.rs.
+
 ## 0.3.0
 
 - `Program` now has its *uniform interface* tagged in the type.

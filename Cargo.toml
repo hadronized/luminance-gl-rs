@@ -1,6 +1,6 @@
 [package]
 name = "luminance-gl"
-version = "0.3.0"
+version = "0.3.1"
 license = "BSD-3-Clause"
 authors = ["Dimitri 'phaazon' Sabadie <dimitri.sabadie@gmail.com>"]
 description = "OpenGL backends for luminance"
