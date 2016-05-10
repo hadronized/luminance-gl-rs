@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/phaazon/luminance-gl-rs.svg?branch=master)](https://travis-ci.org/phaazon/luminance-gl-rs)
-![crates.io](https://img.shields.io/badge/crates.io-0.1.0-green.svg?style=flat)
+[![crates.io](https://img.shields.io/crates/v/luminance-gl.svg)](https://crates.io/crates/luminance-gl)
 ![License](https://img.shields.io/badge/license-BSD3-blue.svg?style=flat)
 
 # OpenGL luminance backend
