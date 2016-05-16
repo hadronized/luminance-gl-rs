@@ -3,15 +3,15 @@ use gl::types::*;
 use gl33::token::GL33;
 use luminance::blending;
 use luminance::framebuffer::{ColorSlot, DepthSlot};
-use luminance::render::{self, HasFrameCommand};
+use luminance::pipeline::{self, HasPipeline, RunShadingCommand};
 use luminance::texture::{Dimensionable, Layerable};
 
-pub type FrameCommand<'a, L, D, CS, DS> = render::FrameCommand<'a, GL33, L, D, CS, DS>;
-pub type ShadingCommand<'a> = render::ShadingCommand<'a, GL33>;
-pub type RenderCommand<'a> = render::RenderCommand<'a, GL33>;
+pub type Pipeline<'a, L, D, CS, DS> = pipeline::Pipeline<'a, GL33, L, D, CS, DS>;
+pub type ShadingCommand<'a, T> = pipeline::ShadingCommand<'a, GL33, T>;
+pub type RenderCommand<'a, T> = pipeline::RenderCommand<'a, GL33, T>;
 
-impl HasFrameCommand for GL33 {
-  fn run_frame_command<L, D, CS, DS>(cmd: &render::FrameCommand<Self, L, D, CS, DS>)
+impl HasPipeline for GL33 {
+  fn run_pipeline<L, D, CS, DS>(cmd: &pipeline::Pipeline<Self, L, D, CS, DS>)
     where L: Layerable,
           D: Dimensionable,
           D::Size: Copy,
@@ -26,16 +26,21 @@ impl HasFrameCommand for GL33 {
     }
 
     for shading_cmd in &cmd.shading_commands {
-      unsafe { gl::UseProgram(*shading_cmd.program) };
+      shading_cmd.run_shading_command();
+    }
+  }
 
-      (shading_cmd.update)();
+  fn run_shading_command<T>(shading_cmd: &pipeline::ShadingCommand<Self, T>) {
+    unsafe { gl::UseProgram(shading_cmd.program.repr) };
 
-      for render_cmd in &shading_cmd.render_commands {
-        set_blending(render_cmd.blending);
-        set_depth_test(render_cmd.depth_test);
-        (render_cmd.update)();
-        (render_cmd.tessellation.repr.render)(render_cmd.rasterization_size, render_cmd.instances);
-      }
+    let uniform_interface = &shading_cmd.program.uniform_interface;
+    (shading_cmd.update)(uniform_interface);
+
+    for render_cmd in &shading_cmd.render_commands {
+      set_blending(render_cmd.blending);
+      set_depth_test(render_cmd.depth_test);
+      (render_cmd.update)(uniform_interface);
+      (render_cmd.tessellation.repr.render)(render_cmd.rasterization_size, render_cmd.instances);
     }
   }
 }
