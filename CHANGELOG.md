@@ -1,3 +1,12 @@
+### 0.4.1
+
+- Crate fixed because of *0.4.0* being broken then yanked.
+
+# 0.4.0
+
+- Implemented existential quantification for `Pipeline`.
+- Added travis CI support.
+
 ### 0.3.2
 
 - Added `ProgramProxy` in the export list of lib.rs.
