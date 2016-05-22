@@ -102,7 +102,9 @@ impl HasFramebuffer for GL33 {
         gl::DeleteRenderbuffers(1, &renderbuffer);
       }
 
-      gl::DeleteFramebuffers(1, &framebuffer.handle);
+      if framebuffer.handle != 0 {
+        gl::DeleteFramebuffers(1, &framebuffer.handle);
+      }
     }
   }
 

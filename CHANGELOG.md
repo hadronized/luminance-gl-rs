@@ -1,3 +1,7 @@
+### 0.4.2
+
+- Fixed `HasFramebuffer::free_framebuffer`.
+
 ### 0.4.1
 
 - Crate fixed because of *0.4.0* being broken then yanked.
