@@ -10,6 +10,6 @@ pub fn gl_pixel_format(pf: PixelFormat) -> Option<(GLenum, GLenum, GLenum)> {
     (Format::RGB(32, 32, 32), Type::Floating) => Some((gl::RGB, gl::RGB32F, gl::FLOAT)),
     (Format::RGBA(32, 32, 32, 32), Type::Floating) => Some((gl::RGBA, gl::RGBA32F, gl::FLOAT)),
     (Format::Depth(32), Type::Floating) => Some((gl::DEPTH_COMPONENT, gl::DEPTH_COMPONENT32F, gl::FLOAT)),
-    _ => None
+    _ => panic!("unsupported pixel format")
   }
 }
