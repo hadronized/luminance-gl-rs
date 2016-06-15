@@ -1,3 +1,7 @@
+### 0.4.3
+
+- Implemented `Uniform` for `Texture`.
+
 ### 0.4.2
 
 - Fixed `HasFramebuffer::free_framebuffer`.
