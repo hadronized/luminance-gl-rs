@@ -130,7 +130,7 @@ impl uniform::HasUniform for GL33 {
   }
 
   fn update1_bool(u: &Self::U, x: bool) {
-    unsafe { gl::Uniform1i(*u, x as i32) }
+    unsafe { gl::Uniform1i(*u, x as GLint) }
   }
 
   fn update2_bool(u: &Self::U, v: [bool; 2]) {
@@ -166,5 +166,15 @@ impl uniform::HasUniform for GL33 {
   fn update4_slice_bool(u: &Self::U, v: &[[bool; 4]]) {
     let v: Vec<_> = v.iter().map(|x| [x[0] as i32, x[1] as i32, x[2] as i32, x[3] as i32]).collect();
     unsafe { gl::Uniform4iv(*u, v.len() as GLsizei, v.as_ptr() as *const i32) }
+  }
+
+  fn update_textures(u: &Self::U, textures: &[Self::ATexture]) {
+    for (tex_unit, texture) in textures.iter().enumerate() {
+      unsafe {
+        gl::ActiveTexture(gl::TEXTURE0 + tex_unit as GLenum);
+        gl::BindTexture(texture.target, texture.handle);
+        gl::Uniform1i(*u, tex_unit as GLint);
+      }
+    }
   }
 }

@@ -10,8 +10,23 @@ use std::ptr;
 
 pub type Texture<L, D, P> = texture::Texture<GL33, L, D, P>;
 
+// OpenGL texture representation.
+pub struct GLTexture {
+  pub handle: GLuint, // handle to GPU texture object
+  pub target: GLenum // « type » of the texture; used for bindings
+}
+
+impl GLTexture {
+  pub fn new(handle: GLuint, target: GLenum) -> Self {
+    GLTexture {
+      handle: handle,
+      target: target
+    }
+  }
+}
+
 impl HasTexture for GL33 {
-  type ATexture = GLuint;
+  type ATexture = GLTexture;
 
   fn new_texture<L, D, P>(size: D::Size, mipmaps: u32, sampler: &Sampler) -> Self::ATexture
       where L: Layerable,
@@ -19,10 +34,9 @@ impl HasTexture for GL33 {
             D::Size: Copy,
             P: Pixel {
     let mut texture = 0;
+    let target = to_target(L::layering(), D::dim());
 
     unsafe {
-      let target = to_target(L::layering(), D::dim());
-
       gl::GenTextures(1, &mut texture);
 
       gl::BindTexture(target, texture);
@@ -30,11 +44,11 @@ impl HasTexture for GL33 {
       gl::BindTexture(target, 0);
     }
 
-    texture
+    GLTexture::new(texture, target)
   }
 
-  fn free(tex: &mut Self::ATexture) {
-    unsafe { gl::DeleteTextures(1, tex) }
+  fn free(texture: &mut Self::ATexture) {
+    unsafe { gl::DeleteTextures(1, &texture.handle) }
   }
 
   fn clear_part<L, D, P>(texture: &Self::ATexture, gen_mipmaps: bool, off: D::Offset, size: D::Size, pixel: P::Encoding)
@@ -44,18 +58,16 @@ impl HasTexture for GL33 {
 
   fn upload_part<L, D, P>(texture: &Self::ATexture, gen_mipmaps: bool, off: D::Offset, size: D::Size, texels: &Vec<P::Encoding>)
       where L: Layerable, D::Offset: Copy, D::Size: Copy, D: Dimensionable, P: Pixel {
-    let target = to_target(L::layering(), D::dim());
-
     unsafe {
-      gl::BindTexture(target, *texture);
+      gl::BindTexture(texture.target, texture.handle);
 
-      upload_texels::<L, D, P>(target, off, size, texels);
+      upload_texels::<L, D, P>(texture.target, off, size, texels);
 
       if gen_mipmaps {
-        gl::GenerateMipmap(target);
+        gl::GenerateMipmap(texture.target);
       }
 
-      gl::BindTexture(target, 0);
+      gl::BindTexture(texture.target, 0);
     }
   }
 }
