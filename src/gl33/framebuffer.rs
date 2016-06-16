@@ -17,7 +17,7 @@ pub struct GLFramebuffer {
 impl HasFramebuffer for GL33 {
   type Framebuffer = GLFramebuffer;
 
-  fn new_framebuffer<L, D, CS, DS>(size: D::Size, mipmaps: u32) -> Result<(Self::Framebuffer, Vec<Self::ATexture>, Option<Self::ATexture>), FramebufferError>
+  fn new_framebuffer<L, D, CS, DS>(size: D::Size, mipmaps: usize) -> Result<(Self::Framebuffer, Vec<Self::ATexture>, Option<Self::ATexture>), FramebufferError>
     where L: Layerable,
           D: Dimensionable,
           D::Size: Copy,

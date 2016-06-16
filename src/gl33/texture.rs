@@ -28,7 +28,7 @@ impl GLTexture {
 impl HasTexture for GL33 {
   type ATexture = GLTexture;
 
-  fn new_texture<L, D, P>(size: D::Size, mipmaps: u32, sampler: &Sampler) -> Self::ATexture
+  fn new_texture<L, D, P>(size: D::Size, mipmaps: usize, sampler: &Sampler) -> Self::ATexture
       where L: Layerable,
             D: Dimensionable,
             D::Size: Copy,
@@ -72,7 +72,7 @@ impl HasTexture for GL33 {
   }
 }
 
-pub fn create_texture<L, D>(target: GLenum, size: D::Size, mipmaps: u32, pf: PixelFormat, sampler: &Sampler)
+pub fn create_texture<L, D>(target: GLenum, size: D::Size, mipmaps: usize, pf: PixelFormat, sampler: &Sampler)
     where L: Layerable,
           D: Dimensionable,
           D::Size: Copy {
@@ -98,7 +98,7 @@ pub fn to_target(l: Layering, d: Dim) -> GLenum {
   }
 }
 
-fn create_texture_storage<L, D>(size: D::Size, mipmaps: u32, pf: PixelFormat) -> Option<String>
+fn create_texture_storage<L, D>(size: D::Size, mipmaps: usize, pf: PixelFormat) -> Option<String>
     where L: Layerable,
           D: Dimensionable,
           D::Size: Copy {
@@ -132,17 +132,17 @@ fn create_texture_storage<L, D>(size: D::Size, mipmaps: u32, pf: PixelFormat) ->
   }
 }
 
-fn create_texture_1d_storage(format: GLenum, iformat: GLenum, encoding: GLenum, w: u32, mipmaps: u32) {
+fn create_texture_1d_storage(format: GLenum, iformat: GLenum, encoding: GLenum, w: u32, mipmaps: usize) {
   for level in 0..mipmaps {
-    let w = w / 2u32.pow(level);
+    let w = w / 2u32.pow(level as u32);
 
     unsafe { gl::TexImage1D(gl::TEXTURE_1D, level as GLint, iformat as GLint, w as GLsizei, 0, format, encoding, ptr::null()) };
   }
 }
 
-fn create_texture_2d_storage(format: GLenum, iformat: GLenum, encoding: GLenum, w: u32, h: u32, mipmaps: u32) {
+fn create_texture_2d_storage(format: GLenum, iformat: GLenum, encoding: GLenum, w: u32, h: u32, mipmaps: usize) {
   for level in 0..mipmaps {
-    let div = 2u32.pow(level);
+    let div = 2u32.pow(level as u32);
     let w = w / div;
     let h = h / div;
 
@@ -150,9 +150,9 @@ fn create_texture_2d_storage(format: GLenum, iformat: GLenum, encoding: GLenum, 
   }
 }
 
-fn create_texture_3d_storage(format: GLenum, iformat: GLenum, encoding: GLenum, w: u32, h: u32, d: u32, mipmaps: u32) {
+fn create_texture_3d_storage(format: GLenum, iformat: GLenum, encoding: GLenum, w: u32, h: u32, d: u32, mipmaps: usize) {
   for level in 0..mipmaps {
-    let div = 2u32.pow(level);
+    let div = 2u32.pow(level as u32);
     let w = w / div;
     let h = h / div;
     let d = d / div;
@@ -161,15 +161,15 @@ fn create_texture_3d_storage(format: GLenum, iformat: GLenum, encoding: GLenum, 
   }
 }
 
-fn create_cubemap_storage(format: GLenum, iformat: GLenum, encoding: GLenum, s: u32, mipmaps: u32) {
+fn create_cubemap_storage(format: GLenum, iformat: GLenum, encoding: GLenum, s: u32, mipmaps: usize) {
   for level in 0..mipmaps {
-    let s = s / 2u32.pow(level);
+    let s = s / 2u32.pow(level as u32);
 
     unsafe { gl::TexImage2D(gl::TEXTURE_CUBE_MAP, level as GLint, iformat as GLint, s as GLsizei, s as GLsizei, 0, format, encoding, ptr::null()) };
   }
 }
 
-fn set_texture_levels(target: GLenum, mipmaps: u32) {
+fn set_texture_levels(target: GLenum, mipmaps: usize) {
   unsafe {
     gl::TexParameteri(target, gl::TEXTURE_BASE_LEVEL, 0);
     gl::TexParameteri(target, gl::TEXTURE_MAX_LEVEL, mipmaps as GLint - 1);
