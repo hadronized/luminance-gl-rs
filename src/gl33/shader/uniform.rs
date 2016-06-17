@@ -168,11 +168,13 @@ impl uniform::HasUniform for GL33 {
     unsafe { gl::Uniform4iv(*u, v.len() as GLsizei, v.as_ptr() as *const i32) }
   }
 
-  fn update_textures(u: &Self::U, textures: &[Self::ATexture]) {
+  fn update_textures<Tex: AsRef<Self::ATexture>>(u: &Self::U, textures: &[Tex]) {
     for (tex_unit, texture) in textures.iter().enumerate() {
+      let tex = texture.as_ref();
+
       unsafe {
         gl::ActiveTexture(gl::TEXTURE0 + tex_unit as GLenum);
-        gl::BindTexture(texture.target, texture.handle);
+        gl::BindTexture(tex.target, tex.handle);
         gl::Uniform1i(*u, tex_unit as GLint);
       }
     }
