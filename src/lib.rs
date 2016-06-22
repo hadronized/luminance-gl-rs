@@ -1,4 +1,3 @@
-extern crate core;
 extern crate gl;
 extern crate luminance;
 
