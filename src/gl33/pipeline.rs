@@ -21,6 +21,7 @@ impl HasPipeline for GL33 {
 
     unsafe {
       gl::BindFramebuffer(gl::FRAMEBUFFER, cmd.framebuffer.repr.handle);
+      gl::Viewport(0, 0, cmd.framebuffer.repr.w as GLint, cmd.framebuffer.repr.h as GLint);
       gl::ClearColor(clear_color[0], clear_color[1], clear_color[2], clear_color[3]);
       gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
     }

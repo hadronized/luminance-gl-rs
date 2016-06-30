@@ -11,7 +11,9 @@ pub type Slot<L, D, P> = framebuffer::Slot<GL33, L, D, P>;
 
 pub struct GLFramebuffer {
   pub handle: GLuint,
-  pub renderbuffer: Option<GLuint>
+  pub renderbuffer: Option<GLuint>,
+  pub w: u32,
+  pub h: u32,
 }
 
 impl HasFramebuffer for GL33 {
@@ -76,7 +78,9 @@ impl HasFramebuffer for GL33 {
 
       let mut gl_framebuffer = GLFramebuffer {
         handle: framebuffer,
-        renderbuffer: depth_renderbuffer
+        renderbuffer: depth_renderbuffer,
+        w: D::width(size),
+        h: D::height(size)
       };
 
       match get_status() {
@@ -110,10 +114,14 @@ impl HasFramebuffer for GL33 {
     }
   }
 
-  fn default_framebuffer() -> Self::Framebuffer {
+  fn default_framebuffer<D>(size: D::Size) -> Self::Framebuffer
+      where D: Dimensionable,
+            D::Size: Copy {
     GLFramebuffer {
       handle: 0,
-      renderbuffer: None
+      renderbuffer: None,
+      w: D::width(size),
+      h: D::height(size)
     }
   }
 }
