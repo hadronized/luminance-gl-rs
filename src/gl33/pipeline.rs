@@ -3,7 +3,7 @@ use gl::types::*;
 use gl33::token::GL33;
 use luminance::blending;
 use luminance::framebuffer::{ColorSlot, DepthSlot};
-use luminance::pipeline::{self, HasPipeline, SomeShadingCommand};
+use luminance::pipeline::{self, HasPipeline};
 use luminance::texture::{Dimensionable, Layerable};
 
 pub type Pipeline<'a, L, D, CS, DS> = pipeline::Pipeline<'a, GL33, L, D, CS, DS>;
