@@ -1,3 +1,13 @@
+## 0.5.0
+
+- Fixed viewport issue.
+- Removed the need of **core**.
+- Removed `UniformName`.
+- Fixed the `update_textures` function regarding **luminance**.
+- Using `AsRef` for `update_textures`.
+- Adapted mipmaps as `usize`.
+- Panic if unknown pixel format.
+
 ### 0.4.3
 
 - Implemented `Uniform` for `Texture`.
@@ -10,7 +20,7 @@
 
 - Crate fixed because of *0.4.0* being broken then yanked.
 
-# 0.4.0
+## 0.4.0
 
 - Implemented existential quantification for `Pipeline`.
 - Added travis CI support.
