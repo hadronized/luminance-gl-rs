@@ -1,3 +1,8 @@
+### 0.5.1
+
+- *[internal]* Fixed vertex input offsets. That issue makes all prior versions fail when trying to
+  handle multi-attributes vertices. You are very advised to upgrade to this version then.
+
 ## 0.5.0
 
 - Fixed viewport issue.

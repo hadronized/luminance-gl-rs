@@ -106,15 +106,17 @@ impl HasTessellation for GL33 {
 
 fn set_vertex_pointers(formats: &VertexFormat) {
   let vertex_weight = vertex_weight(formats) as GLsizei;
+  let mut offset = 0;
 
   for (i, format) in formats.iter().enumerate() {
-    set_component_format(i as u32, vertex_weight, format);
+    set_component_format(i as u32, vertex_weight, offset, format);
+    offset += component_weight(format) as u32;
   }
 }
 
-fn set_component_format(i: u32, stride: GLsizei, cf: &VertexComponentFormat) {
+fn set_component_format(i: u32, stride: GLsizei, off: u32, cf: &VertexComponentFormat) {
   unsafe {
-    gl::VertexAttribPointer(i as GLuint, from_dim(&cf.dim), from_type(&cf.component_type), gl::FALSE, stride, ptr::null());
+    gl::VertexAttribPointer(i as GLuint, from_dim(&cf.dim), from_type(&cf.component_type), gl::FALSE, stride, ptr::null().offset(off as isize));
     gl::EnableVertexAttribArray(i as GLuint);
   }
 }
