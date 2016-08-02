@@ -1,0 +1,1 @@
+initSidebarItems({"type":[["M22","2x2 floating matrix."],["M33","3x3 floating matrix."],["M44","4x4 floating matrix."]]});

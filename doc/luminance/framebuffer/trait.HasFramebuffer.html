@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `HasFramebuffer` trait in crate `luminance`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, HasFramebuffer">
+
+    <title>luminance::framebuffer::HasFramebuffer - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>luminance</a>::<wbr><a href='index.html'>framebuffer</a></p><script>window.sidebarCurrent = {name: 'HasFramebuffer', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content trait">
+<h1 class='fqn'><span class='in-band'>Trait <a href='../index.html'>luminance</a>::<wbr><a href='index.html'>framebuffer</a>::<wbr><a class='trait' href=''>HasFramebuffer</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-151' class='srclink' href='../../src/luminance/framebuffer.rs.html#40-57' title='goto source code'>[src]</a></span></h1>
+<pre class='rust trait'>pub trait HasFramebuffer: <a class='trait' href='../../luminance/texture/trait.HasTexture.html' title='luminance::texture::HasTexture'>HasTexture</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a> {
+    type <a href='#associatedtype.Framebuffer' class='type'>Framebuffer</a>;
+    fn <a href='#tymethod.new_framebuffer' class='fnname'>new_framebuffer</a>&lt;L, D, CS, DS&gt;(size: D::Size, mipmaps: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a>Self::<a class='trait' href='../../luminance/framebuffer/trait.HasFramebuffer.html' title='luminance::framebuffer::HasFramebuffer'>Framebuffer</a>, <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;Self::<a class='trait' href='../../luminance/framebuffer/trait.HasFramebuffer.html' title='luminance::framebuffer::HasFramebuffer'>ATexture</a>&gt;, <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;Self::<a class='trait' href='../../luminance/framebuffer/trait.HasFramebuffer.html' title='luminance::framebuffer::HasFramebuffer'>ATexture</a>&gt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a>, <a class='enum' href='../../luminance/framebuffer/enum.FramebufferError.html' title='luminance::framebuffer::FramebufferError'>FramebufferError</a>&gt; <span class='where'>where L: <a class='trait' href='../../luminance/texture/trait.Layerable.html' title='luminance::texture::Layerable'>Layerable</a>, D: <a class='trait' href='../../luminance/texture/trait.Dimensionable.html' title='luminance::texture::Dimensionable'>Dimensionable</a>, D::Size: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a>, CS: <a class='trait' href='../../luminance/framebuffer/trait.ColorSlot.html' title='luminance::framebuffer::ColorSlot'>ColorSlot</a>&lt;Self, L, D&gt;, DS: <a class='trait' href='../../luminance/framebuffer/trait.DepthSlot.html' title='luminance::framebuffer::DepthSlot'>DepthSlot</a>&lt;Self, L, D&gt;</span>;
+    fn <a href='#tymethod.free_framebuffer' class='fnname'>free_framebuffer</a>(framebuffer: &amp;mut Self::<a class='trait' href='../../luminance/framebuffer/trait.HasFramebuffer.html' title='luminance::framebuffer::HasFramebuffer'>Framebuffer</a>);
+    fn <a href='#tymethod.default_framebuffer' class='fnname'>default_framebuffer</a>&lt;D&gt;(size: D::Size) -&gt; Self::<a class='trait' href='../../luminance/framebuffer/trait.HasFramebuffer.html' title='luminance::framebuffer::HasFramebuffer'>Framebuffer</a> <span class='where'>where D: <a class='trait' href='../../luminance/texture/trait.Dimensionable.html' title='luminance::texture::Dimensionable'>Dimensionable</a>, D::Size: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a></span>;
+}</pre><div class='docblock'><p>Trait to implement to provide framebuffer features.</p>
+
+<p>When creating a new framebuffer with <code>new_framebuffer</code>, the color and depth formats are passed
+and should be used to create internal textures and/or buffers to represent the slots.</p>
+</div>
+            <h2 id='associated-types'>Associated Types</h2>
+            <div class='methods'>
+        <h3 id='associatedtype.Framebuffer' class='method stab '><code>type <a href='#associatedtype.Framebuffer' class='type'>Framebuffer</a></code></h3><div class='docblock'><p>Framebuffer representation.</p>
+</div></div>
+            <h2 id='required-methods'>Required Methods</h2>
+            <div class='methods'>
+        <h3 id='tymethod.new_framebuffer' class='method stab '><code>fn <a href='#tymethod.new_framebuffer' class='fnname'>new_framebuffer</a>&lt;L, D, CS, DS&gt;(size: D::Size, mipmaps: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a>Self::<a class='trait' href='../../luminance/framebuffer/trait.HasFramebuffer.html' title='luminance::framebuffer::HasFramebuffer'>Framebuffer</a>, <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;Self::<a class='trait' href='../../luminance/framebuffer/trait.HasFramebuffer.html' title='luminance::framebuffer::HasFramebuffer'>ATexture</a>&gt;, <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;Self::<a class='trait' href='../../luminance/framebuffer/trait.HasFramebuffer.html' title='luminance::framebuffer::HasFramebuffer'>ATexture</a>&gt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a>, <a class='enum' href='../../luminance/framebuffer/enum.FramebufferError.html' title='luminance::framebuffer::FramebufferError'>FramebufferError</a>&gt; <span class='where'>where L: <a class='trait' href='../../luminance/texture/trait.Layerable.html' title='luminance::texture::Layerable'>Layerable</a>, D: <a class='trait' href='../../luminance/texture/trait.Dimensionable.html' title='luminance::texture::Dimensionable'>Dimensionable</a>, D::Size: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a>, CS: <a class='trait' href='../../luminance/framebuffer/trait.ColorSlot.html' title='luminance::framebuffer::ColorSlot'>ColorSlot</a>&lt;Self, L, D&gt;, DS: <a class='trait' href='../../luminance/framebuffer/trait.DepthSlot.html' title='luminance::framebuffer::DepthSlot'>DepthSlot</a>&lt;Self, L, D&gt;</span></code></h3><div class='docblock'><p>Create a new framebuffer.</p>
+</div><h3 id='tymethod.free_framebuffer' class='method stab '><code>fn <a href='#tymethod.free_framebuffer' class='fnname'>free_framebuffer</a>(framebuffer: &amp;mut Self::<a class='trait' href='../../luminance/framebuffer/trait.HasFramebuffer.html' title='luminance::framebuffer::HasFramebuffer'>Framebuffer</a>)</code></h3><div class='docblock'><p>Free a framebuffer.</p>
+</div><h3 id='tymethod.default_framebuffer' class='method stab '><code>fn <a href='#tymethod.default_framebuffer' class='fnname'>default_framebuffer</a>&lt;D&gt;(size: D::Size) -&gt; Self::<a class='trait' href='../../luminance/framebuffer/trait.HasFramebuffer.html' title='luminance::framebuffer::HasFramebuffer'>Framebuffer</a> <span class='where'>where D: <a class='trait' href='../../luminance/texture/trait.Dimensionable.html' title='luminance::texture::Dimensionable'>Dimensionable</a>, D::Size: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a></span></code></h3><div class='docblock'><p>Default framebuffer.</p>
+</div></div>
+        <h2 id='implementors'>Implementors</h2>
+        <ul class='item-list' id='implementors-list'>
+    </ul><script type="text/javascript" async
+                         src="../../implementors/luminance/framebuffer/trait.HasFramebuffer.js">
+                 </script></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "luminance";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

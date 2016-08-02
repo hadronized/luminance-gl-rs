@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `vertex` mod in crate `luminance`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, vertex">
+
+    <title>luminance::vertex - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>luminance</a></p><script>window.sidebarCurrent = {name: 'vertex', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>luminance</a>::<wbr><a class='mod' href=''>vertex</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-1808' class='srclink' href='../../src/luminance/vertex.rs.html#1-275' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>Vertex formats and associated types and functions.</p>
+
+<p>A vertex is a type representing a point. It’s common to find vertex position, normals, colors or
+even texture coordinates. However, you’re free to use whichever type you want.
+Nevertheless, you’re limited to a range of types and dimensions. See <code>Type</code> and
+<code>Dim</code> for further details.</p>
+
+<h1 id='vertex' class='section-header'><a href='#vertex'><code>Vertex</code></a></h1>
+<h2 id='rules' class='section-header'><a href='#rules'>Rules</a></h2>
+<p>To be able to use a type as a vertex, you have to implement the <code>Vertex</code> trait. That trait
+represents a mapping between your type and <code>VertexFormat</code>. A <code>VertexFormat</code> gives runtime hints
+about your type and restricts the supported type. If you cannot map your type to <code>VertexFormat</code>,
+that means you cannot use it as a <code>Vertex</code>.</p>
+
+<p>The rule is that your type should have a static size greater than 0 and less than or equal to 4.
+It should also be either integral, unsigned, floating or boolean. If your type is a complex one
+– for instance a <code>struct</code> – you have to recursively apply that rule to all its fields.
+For instance, the tuple <code>(i32, bool)</code> implements <code>Vertex</code> by providing an implementation using
+the ones of <code>i32</code> and <code>bool</code>.</p>
+
+<h2 id='components-list' class='section-header'><a href='#components-list'>Components list</a></h2>
+<p>As mentionned above, you can use tuples and structs as <code>Vertex</code>. If you look at the definition
+of <code>VertexFormat</code>, you’ll notice that it’s a <code>Vec&lt;VertexComponentFormat&gt;</code>. That means simple
+and primary types map to unit vectors – i.e. their size is 1 – but tuples and structs need
+several <code>VertexComponentFormat</code>s to be represented, hence vectors with sizes greater than 1.</p>
+
+<h1 id='generic-implementation' class='section-header'><a href='#generic-implementation'>Generic implementation</a></h1>
+<p>You have <code>Vertex</code> implementations for all the primary types that can be mapped to
+<code>VertexFormat</code>. However, as it’s not possible to automatically implement <code>Vertex</code> for your
+structure (yet?), a type is provided to help you design your vertex type so that you’re
+automatically provided with a <code>Vertex</code> implementation if you use <code>Chain</code>.</p>
+
+<p><code>Chain</code> is a special type used to represent static list of types. With that in hand, you can
+easily create <code>Vertex</code> types and start using them without even implementing <code>Vertex</code>, as long as
+you use <code>Vertex</code> types. Feel free to dig in the <code>Chain</code> documentation for further details.</p>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.VertexComponentFormat.html'
+                                  title='luminance::vertex::VertexComponentFormat'>VertexComponentFormat</a></td>
+                           <td class='docblock short'>
+                                <p>A <code>VertexComponentFormat</code> gives hints about:</p>
+                           </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.Dim.html'
+                                  title='luminance::vertex::Dim'>Dim</a></td>
+                           <td class='docblock short'>
+                                <p>Possible dimension of vertex components.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.Type.html'
+                                  title='luminance::vertex::Type'>Type</a></td>
+                           <td class='docblock short'>
+                                <p>Possible type of vertex components.</p>
+                           </td>
+                       </tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.Vertex.html'
+                                  title='luminance::vertex::Vertex'>Vertex</a></td>
+                           <td class='docblock short'>
+                                <p>A type that can be used as a <code>Vertex</code> has to implement that trait – it must provide a mapping
+to <code>VertexFormat</code>.</p>
+                           </td>
+                       </tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.vertex_format_size.html'
+                                  title='luminance::vertex::vertex_format_size'>vertex_format_size</a></td>
+                           <td class='docblock short'>
+                                <p>Retrieve the number of components in a <code>VertexFormat</code>.</p>
+                           </td>
+                       </tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='type' href='type.VertexFormat.html'
+                                  title='luminance::vertex::VertexFormat'>VertexFormat</a></td>
+                           <td class='docblock short'>
+                                <p>A <code>VertexFormat</code> is a list of <code>VertexComponentFormat</code>s.</p>
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "luminance";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

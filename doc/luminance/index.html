@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `luminance` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, luminance">
+
+    <title>luminance - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'></p><script>window.sidebarCurrent = {name: 'luminance', ty: 'mod', relpath: '../'};</script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>luminance</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-0' class='srclink' href='../src/luminance/lib.rs.html#1-101' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'>
+<h1 id='what-is-this' class='section-header'><a href='#what-is-this'>What is this?</a></h1>
+<p><a href="https://crates.io/crates/luminance"><img src="https://img.shields.io/crates/v/luminance.svg" alt="crates.io"></a>
+<img src="https://img.shields.io/badge/license-BSD3-blue.svg?style=flat" alt="License"></p>
+
+<p><code>luminance</code> is an effort to make graphics rendering simple and elegant. The aims of <code>luminance</code> are:</p>
+
+<ul>
+<li>making <strong>unsafe</strong> and <strong>stateful</strong> <em>APIs</em> (e.g. <strong>OpenGL</strong>) <strong>safe</strong> and <strong>stateless</strong> ;</li>
+<li>providing a simple API; that is, exposing core concepts without anything extra – just the bare
+stuff ;</li>
+<li>abstract over the trending hardware interfaces (i.e. <strong>OpenGL</strong> up to now) and provide several
+backends to pick through different packages ;</li>
+<li>easy to read with a good documentation and set of tutorials, so that new comers don’t have to
+learn a lot of new concepts to get their feet wet.</li>
+</ul>
+
+<h1 id='whats-included' class='section-header'><a href='#whats-included'>What’s included?</a></h1>
+<p><code>luminance</code> is a rendering framework, not a 3D engine. As so, it doesn’t include stuff like
+lights, materials, asset management nor scene description. It only provides a rendering framework
+you can plug in whatever libraries you want to.</p>
+
+<h2 id='luminance-ecosystem' class='section-header'><a href='#luminance-ecosystem'>luminance ecosystem</a></h2>
+<p>Because I think it’s important to <a href="https://en.wikipedia.org/wiki/KISS_principle">KISS</a>, <code>luminance</code>
+is split in very several, very simple packages. The idea is that the <code>luminance</code> package is the core
+package of the library. It provides all the interface, common algorithms and the overall
+architecture and how you should interact with a <em>GPU</em>. However, you need a <em>backend</em> to interpret
+that code and make it run – one could even imagine a backend making it run on a CPU!</p>
+
+<p>Feel free to search for <code>luminance-*</code> packages and pick the one you need ;).</p>
+
+<h2 id='features-set' class='section-header'><a href='#features-set'>Features set</a></h2>
+<ul>
+<li><strong>buffers</strong>: <strong>buffers</strong> are way to communicate with the <em>GPU</em>; they represent regions of memory
+you can write to and read from. There’re several kinds of buffers you can create, among <em>vertex
+and index buffers</em>, <em>shader buffer</em>, <em>compute buffer</em>, and so on and so forth… ;</li>
+<li><strong>framebuffers</strong>: <strong>framebuffers</strong> are used to hold <em>renders</em>. Each time you want to perform a
+render, you need to perform it into a framebuffer. Framebuffers can then be combined with each
+other to produce nice effects ;</li>
+<li><strong>shaders</strong>: <code>luminance</code> support five kinds of shader stages:
+
+<ul>
+<li>tessellation control shaders ;</li>
+<li>tessellation evaluation shaders ;</li>
+<li>vertex shaders ;</li>
+<li>geometry shaders ;</li>
+<li>fragment shaders ;</li>
+</ul></li>
+<li><strong>vertices, indices, primitives and tessellations</strong>: those are used to define a shape you can
+render into a framebuffer</li>
+<li><strong>textures</strong>: <strong>textures</strong> represent information packed into arrays on the GPU, and can be used
+to customize a visual aspect or pass information around ;</li>
+<li><strong>blending</strong>: <strong>blending</strong> is the process of taking two colors from two framebuffers and mix them
+between each other ;</li>
+<li>and a lot of other cool things like <em>GPU commands</em>.</li>
+</ul>
+
+<h1 id='current-backends' class='section-header'><a href='#current-backends'>Current backends</a></h1>
+<p>Here’s a list of backends for <code>luminance</code>. If you’ve written one and like to make it appear in that
+list, feel free to contact me on github or push a PR ;).</p>
+
+<ul>
+<li><code>luminance-gl</code>: <strong>OpenGL</strong> backend; <a href="https://github.com/phaazon/luminance-gl-rs.git"><code>luminance-gl</code> github page</a></li>
+</ul>
+
+<h1 id='windowing' class='section-header'><a href='#windowing'>Windowing</a></h1>
+<p><code>luminance</code> does not provide point a way to create windows because it’s important that it not depend
+on windowing libraries so that end-users can use whatever they like. Furthermore, such libraries
+typically implement windowing and events features, which have nothing to do with our initial
+purpose.</p>
+
+<h1 id='how-to-dig-in' class='section-header'><a href='#how-to-dig-in'>How to dig in?</a></h1>
+<p><code>luminance</code> is written to be fairly simple. The documentation is very transparent about what the
+library does and several articles will appear as the development goes on. Keep tuned! Online
+documentation is planned but in the waiting, feel free to generate the documentation on local and
+browse it with the projects you’re linking <code>luminance</code> against! (<code>cargo doc</code>).</p>
+</div><h2 id='reexports' class='section-header'><a href="#reexports">Reexports</a></h2>
+<table><tr><td><code>pub use <a class='mod' href='../luminance/blending/index.html' title='luminance::blending'>blending</a>::*;</code></td></tr><tr><td><code>pub use buffer::<a class='enum' href='../luminance/buffer/enum.BufferError.html' title='luminance::buffer::BufferError'>BufferError</a>;</code></td></tr><tr><td><code>pub use <a class='mod' href='../luminance/chain/index.html' title='luminance::chain'>chain</a>::*;</code></td></tr><tr><td><code>pub use framebuffer::{<a class='enum' href='../luminance/framebuffer/enum.FramebufferError.html' title='luminance::framebuffer::FramebufferError'>FramebufferError</a>};</code></td></tr><tr><td><code>pub use <a class='mod' href='../luminance/linear/index.html' title='luminance::linear'>linear</a>::*;</code></td></tr><tr><td><code>pub use pixel::{<a class='trait' href='../luminance/pixel/trait.ColorPixel.html' title='luminance::pixel::ColorPixel'>ColorPixel</a>, <a class='trait' href='../luminance/pixel/trait.DepthPixel.html' title='luminance::pixel::DepthPixel'>DepthPixel</a>, <a class='enum' href='../luminance/pixel/enum.Format.html' title='luminance::pixel::Format'>Format</a>, <a class='trait' href='../luminance/pixel/trait.Pixel.html' title='luminance::pixel::Pixel'>Pixel</a>, <a class='struct' href='../luminance/pixel/struct.PixelFormat.html' title='luminance::pixel::PixelFormat'>PixelFormat</a>, <a class='trait' href='../luminance/pixel/trait.RenderablePixel.html' title='luminance::pixel::RenderablePixel'>RenderablePixel</a>, <a class='fn' href='../luminance/pixel/fn.is_color_pixel.html' title='luminance::pixel::is_color_pixel'>is_color_pixel</a>, <a class='fn' href='../luminance/pixel/fn.is_depth_pixel.html' title='luminance::pixel::is_depth_pixel'>is_depth_pixel</a>, <a class='struct' href='../luminance/pixel/struct.RGB8UI.html' title='luminance::pixel::RGB8UI'>RGB8UI</a>, <a class='struct' href='../luminance/pixel/struct.RGBA8UI.html' title='luminance::pixel::RGBA8UI'>RGBA8UI</a>, <a class='struct' href='../luminance/pixel/struct.RGB32F.html' title='luminance::pixel::RGB32F'>RGB32F</a>, <a class='struct' href='../luminance/pixel/struct.RGBA32F.html' title='luminance::pixel::RGBA32F'>RGBA32F</a>, <a class='struct' href='../luminance/pixel/struct.Depth32F.html' title='luminance::pixel::Depth32F'>Depth32F</a>};</code></td></tr><tr><td><code>pub use shader::program::<a class='enum' href='../luminance/shader/program/enum.ProgramError.html' title='luminance::shader::program::ProgramError'>ProgramError</a>;</code></td></tr><tr><td><code>pub use shader::stage::{<a class='struct' href='../luminance/shader/stage/struct.FragmentShader.html' title='luminance::shader::stage::FragmentShader'>FragmentShader</a>, <a class='struct' href='../luminance/shader/stage/struct.GeometryShader.html' title='luminance::shader::stage::GeometryShader'>GeometryShader</a>, <a class='enum' href='../luminance/shader/stage/enum.StageError.html' title='luminance::shader::stage::StageError'>StageError</a>, <a class='trait' href='../luminance/shader/stage/trait.ShaderTypeable.html' title='luminance::shader::stage::ShaderTypeable'>ShaderTypeable</a>, <a class='struct' href='../luminance/shader/stage/struct.TessellationControlShader.html' title='luminance::shader::stage::TessellationControlShader'>TessellationControlShader</a>, <a class='struct' href='../luminance/shader/stage/struct.TessellationEvaluationShader.html' title='luminance::shader::stage::TessellationEvaluationShader'>TessellationEvaluationShader</a>, <a class='struct' href='../luminance/shader/stage/struct.VertexShader.html' title='luminance::shader::stage::VertexShader'>VertexShader</a>};</code></td></tr><tr><td><code>pub use shader::uniform::{<a class='trait' href='../luminance/shader/uniform/trait.Uniformable.html' title='luminance::shader::uniform::Uniformable'>Uniformable</a>, <a class='struct' href='../luminance/shader/uniform/struct.UniformUpdate.html' title='luminance::shader::uniform::UniformUpdate'>UniformUpdate</a>};</code></td></tr><tr><td><code>pub use tessellation::<a class='enum' href='../luminance/tessellation/enum.Mode.html' title='luminance::tessellation::Mode'>Mode</a>;</code></td></tr><tr><td><code>pub use texture::{<a class='enum' href='../luminance/texture/enum.CubeFace.html' title='luminance::texture::CubeFace'>CubeFace</a>, <a class='struct' href='../luminance/texture/struct.Cubemap.html' title='luminance::texture::Cubemap'>Cubemap</a>, <a class='enum' href='../luminance/texture/enum.DepthComparison.html' title='luminance::texture::DepthComparison'>DepthComparison</a>, <a class='trait' href='../luminance/texture/trait.Dimensionable.html' title='luminance::texture::Dimensionable'>Dimensionable</a>, <a class='struct' href='../luminance/texture/struct.Dim1.html' title='luminance::texture::Dim1'>Dim1</a>, <a class='struct' href='../luminance/texture/struct.Dim2.html' title='luminance::texture::Dim2'>Dim2</a>, <a class='struct' href='../luminance/texture/struct.Dim3.html' title='luminance::texture::Dim3'>Dim3</a>, <a class='struct' href='../luminance/texture/struct.Flat.html' title='luminance::texture::Flat'>Flat</a>, <a class='enum' href='../luminance/texture/enum.Filter.html' title='luminance::texture::Filter'>Filter</a>, <a class='trait' href='../luminance/texture/trait.Layerable.html' title='luminance::texture::Layerable'>Layerable</a>, <a class='struct' href='../luminance/texture/struct.Layered.html' title='luminance::texture::Layered'>Layered</a>, <a class='enum' href='../luminance/texture/enum.Layering.html' title='luminance::texture::Layering'>Layering</a>, <a class='struct' href='../luminance/texture/struct.Sampler.html' title='luminance::texture::Sampler'>Sampler</a>, <a class='enum' href='../luminance/texture/enum.Wrap.html' title='luminance::texture::Wrap'>Wrap</a>};</code></td></tr><tr><td><code>pub use vertex::{<a class='trait' href='../luminance/vertex/trait.Vertex.html' title='luminance::vertex::Vertex'>Vertex</a>, <a class='struct' href='../luminance/vertex/struct.VertexComponentFormat.html' title='luminance::vertex::VertexComponentFormat'>VertexComponentFormat</a>, <a class='type' href='../luminance/vertex/type.VertexFormat.html' title='luminance::vertex::VertexFormat'>VertexFormat</a>};</code></td></tr></table><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='blending/index.html'
+                                  title='luminance::blending'>blending</a></td>
+                           <td class='docblock short'>
+                                <p>That module exports blending-related types and functions.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='buffer/index.html'
+                                  title='luminance::buffer'>buffer</a></td>
+                           <td class='docblock short'>
+                                <p>Static GPU typed arrays.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='chain/index.html'
+                                  title='luminance::chain'>chain</a></td>
+                           <td class='docblock short'>
+                                <p>Generalized free tuples.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='framebuffer/index.html'
+                                  title='luminance::framebuffer'>framebuffer</a></td>
+                           <td class='docblock short'>
+                                <p>Framebuffers and utility types and functions.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='linear/index.html'
+                                  title='luminance::linear'>linear</a></td>
+                           <td class='docblock short'>
+                                <p>Aliases types used to make it easier using long linear algebra types.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='pipeline/index.html'
+                                  title='luminance::pipeline'>pipeline</a></td>
+                           <td class='docblock short'>
+                                <p>Dynamic rendering pipelines.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='pixel/index.html'
+                                  title='luminance::pixel'>pixel</a></td>
+                           <td class='docblock short'>
+                                <p>Pixel formats types and function manipulation.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='shader/index.html'
+                                  title='luminance::shader'>shader</a></td>
+                           <td class='docblock short'>
+                                <p>Shader-related modules.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='tessellation/index.html'
+                                  title='luminance::tessellation'>tessellation</a></td>
+                           <td class='docblock short'>
+                                <p>Tessellation features.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='texture/index.html'
+                                  title='luminance::texture'>texture</a></td>
+                           <td class='docblock short'>
+                                <p>This module provides texture features.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='vertex/index.html'
+                                  title='luminance::vertex'>vertex</a></td>
+                           <td class='docblock short'>
+                                <p>Vertex formats and associated types and functions.</p>
+                           </td>
+                       </tr></table><h2 id='macros' class='section-header'><a href="#macros">Macros</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='macro' href='macro.chain!.html'
+                                  title='luminance::chain!'>chain!</a></td>
+                           <td class='docblock short'>
+                                <p>If your compiler supports the <code>type_macros</code><em>feature</em>, you can use this macro to create chains
+without the syntactic nesting boilerplate.</p>
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "luminance";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

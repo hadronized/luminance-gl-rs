@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Mode","Vertices can be connected via several modes."]],"struct":[["Tessellation",""]],"trait":[["HasTessellation","Trait to implement to provide tessellation features."]]});

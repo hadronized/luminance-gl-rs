@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `RenderCommand` struct in crate `luminance`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, RenderCommand">
+
+    <title>luminance::pipeline::RenderCommand - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>luminance</a>::<wbr><a href='index.html'>pipeline</a></p><script>window.sidebarCurrent = {name: 'RenderCommand', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>luminance</a>::<wbr><a href='index.html'>pipeline</a>::<wbr><a class='struct' href=''>RenderCommand</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-556' class='srclink' href='../../src/luminance/pipeline.rs.html#95-102' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct RenderCommand&lt;'a, C, T&gt; <span class='where'>where C: 'a + <a class='trait' href='../../luminance/tessellation/trait.HasTessellation.html' title='luminance::tessellation::HasTessellation'>HasTessellation</a></span> {
+    pub blending: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a><a class='enum' href='../../luminance/blending/enum.Equation.html' title='luminance::blending::Equation'>Equation</a>, <a class='enum' href='../../luminance/blending/enum.Factor.html' title='luminance::blending::Factor'>Factor</a>, <a class='enum' href='../../luminance/blending/enum.Factor.html' title='luminance::blending::Factor'>Factor</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a>&gt;,
+    pub depth_test: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>,
+    pub update: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(&amp;T) + 'a&gt;,
+    pub tessellation: &amp;'a <a class='struct' href='../../luminance/tessellation/struct.Tessellation.html' title='luminance::tessellation::Tessellation'>Tessellation</a>&lt;C&gt;,
+    pub instances: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>,
+    pub rasterization_size: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>&gt;,
+}</pre><div class='docblock'><p>A render command, which holds information on how to rasterize tessellation.</p>
+</div><h2 class='fields'>Fields</h2>
+<table><tr class='stab '>
+                             <td id='structfield.blending'><code>blending</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.depth_test'><code>depth_test</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.update'><code>update</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.tessellation'><code>tessellation</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.instances'><code>instances</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.rasterization_size'><code>rasterization_size</code></td><td></td></tr></table><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl&lt;'a, C, T&gt; <a class='struct' href='../../luminance/pipeline/struct.RenderCommand.html' title='luminance::pipeline::RenderCommand'>RenderCommand</a>&lt;'a, C, T&gt; <span class='where'>where C: 'a + <a class='trait' href='../../luminance/tessellation/trait.HasTessellation.html' title='luminance::tessellation::HasTessellation'>HasTessellation</a></span></code></h3><div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>&lt;F: <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(&amp;T) + 'a&gt;(blending: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a><a class='enum' href='../../luminance/blending/enum.Equation.html' title='luminance::blending::Equation'>Equation</a>, <a class='enum' href='../../luminance/blending/enum.Factor.html' title='luminance::blending::Factor'>Factor</a>, <a class='enum' href='../../luminance/blending/enum.Factor.html' title='luminance::blending::Factor'>Factor</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a>&gt;, depth_test: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>, update: F, tessellation: &amp;'a <a class='struct' href='../../luminance/tessellation/struct.Tessellation.html' title='luminance::tessellation::Tessellation'>Tessellation</a>&lt;C&gt;, instances: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, rasterization_size: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>&gt;) -&gt; Self</code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "luminance";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

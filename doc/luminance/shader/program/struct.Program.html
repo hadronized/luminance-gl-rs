@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Program` struct in crate `luminance`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Program">
+
+    <title>luminance::shader::program::Program - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../../index.html'>luminance</a>::<wbr><a href='../index.html'>shader</a>::<wbr><a href='index.html'>program</a></p><script>window.sidebarCurrent = {name: 'Program', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>luminance</a>::<wbr><a href='../index.html'>shader</a>::<wbr><a href='index.html'>program</a>::<wbr><a class='struct' href=''>Program</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-772' class='srclink' href='../../../src/luminance/shader/program.rs.html#67-70' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Program&lt;C, T&gt; <span class='where'>where C: <a class='trait' href='../../../luminance/shader/program/trait.HasProgram.html' title='luminance::shader::program::HasProgram'>HasProgram</a></span> {
+    pub repr: C::Program,
+    pub uniform_interface: T,
+}</pre><div class='docblock'><p>A shader program with <em>uniform interface</em>.</p>
+</div><h2 class='fields'>Fields</h2>
+<table><tr class='stab '>
+                             <td id='structfield.repr'><code>repr</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.uniform_interface'><code>uniform_interface</code></td><td></td></tr></table><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl&lt;C, T&gt; <a class='struct' href='../../../luminance/shader/program/struct.Program.html' title='luminance::shader::program::Program'>Program</a>&lt;C, T&gt; <span class='where'>where C: <a class='trait' href='../../../luminance/shader/program/trait.HasProgram.html' title='luminance::shader::program::HasProgram'>HasProgram</a></span></code></h3><div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>&lt;GetUni&gt;(tess: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a>&amp;<a class='struct' href='../../../luminance/shader/stage/struct.Stage.html' title='luminance::shader::stage::Stage'>Stage</a>&lt;C, <a class='struct' href='../../../luminance/shader/stage/struct.TessellationControlShader.html' title='luminance::shader::stage::TessellationControlShader'>TessellationControlShader</a>&gt;, &amp;<a class='struct' href='../../../luminance/shader/stage/struct.Stage.html' title='luminance::shader::stage::Stage'>Stage</a>&lt;C, <a class='struct' href='../../../luminance/shader/stage/struct.TessellationEvaluationShader.html' title='luminance::shader::stage::TessellationEvaluationShader'>TessellationEvaluationShader</a>&gt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a>&gt;, vertex: &amp;<a class='struct' href='../../../luminance/shader/stage/struct.Stage.html' title='luminance::shader::stage::Stage'>Stage</a>&lt;C, <a class='struct' href='../../../luminance/shader/stage/struct.VertexShader.html' title='luminance::shader::stage::VertexShader'>VertexShader</a>&gt;, geometry: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='struct' href='../../../luminance/shader/stage/struct.Stage.html' title='luminance::shader::stage::Stage'>Stage</a>&lt;C, <a class='struct' href='../../../luminance/shader/stage/struct.GeometryShader.html' title='luminance::shader::stage::GeometryShader'>GeometryShader</a>&gt;&gt;, fragment: &amp;<a class='struct' href='../../../luminance/shader/stage/struct.Stage.html' title='luminance::shader::stage::Stage'>Stage</a>&lt;C, <a class='struct' href='../../../luminance/shader/stage/struct.FragmentShader.html' title='luminance::shader::stage::FragmentShader'>FragmentShader</a>&gt;, get_uni: GetUni) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;Self, <a class='enum' href='../../../luminance/shader/program/enum.ProgramError.html' title='luminance::shader::program::ProgramError'>ProgramError</a>&gt; <span class='where'>where GetUni: <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(<a class='struct' href='../../../luminance/shader/program/struct.ProgramProxy.html' title='luminance::shader::program::ProgramProxy'>ProgramProxy</a>&lt;C&gt;) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;T, <a class='enum' href='../../../luminance/shader/program/enum.ProgramError.html' title='luminance::shader::program::ProgramError'>ProgramError</a>&gt;</span></code></h4>
+<div class='docblock'><p>Create a new <code>Program</code> by linking it with shader stages and by providing a function to build
+its <em>uniform interface</em>, which the <code>Program</code> will hold for you.</p>
+
+<p>The <em>uniform interface</em> is any type you want. The idea is to bake <code>Uniform&lt;_&gt;</code> in your type so
+that you can access them later. To do so, you’re given an object of type <code>ProgramProxy</code>, which
+has a function <code>uniform</code>. That function can be used to lookup uniforms so that you can build
+your <em>uniform interface</em>.</p>
+
+<p>Use the <code>update</code> function to access the <em>uniform interface</em> back.</p>
+</div><h4 id='method.update' class='method'><code>fn <a href='#method.update' class='fnname'>update</a>&lt;F&gt;(&amp;self, f: F) <span class='where'>where F: <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(&amp;T)</span></code></h4>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;C, T&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='../../../luminance/shader/program/struct.Program.html' title='luminance::shader::program::Program'>Program</a>&lt;C, T&gt; <span class='where'>where C: <a class='trait' href='../../../luminance/shader/program/trait.HasProgram.html' title='luminance::shader::program::HasProgram'>HasProgram</a></span></code></h3><div class='impl-items'><h4 id='method.drop' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop' class='fnname'>drop</a>(&amp;mut self)</code></h4>
+</div><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl&lt;C: <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a>, T: <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a>&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='struct' href='../../../luminance/shader/program/struct.Program.html' title='luminance::shader::program::Program'>Program</a>&lt;C, T&gt; <span class='where'>where C: <a class='trait' href='../../../luminance/shader/program/trait.HasProgram.html' title='luminance::shader::program::HasProgram'>HasProgram</a>, C::Program: <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a></span></code></h3><div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "luminance";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `program` mod in crate `luminance`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, program">
+
+    <title>luminance::shader::program - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../../index.html'>luminance</a>::<wbr><a href='../index.html'>shader</a></p><script>window.sidebarCurrent = {name: 'program', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Module <a href='../../index.html'>luminance</a>::<wbr><a href='../index.html'>shader</a>::<wbr><a class='mod' href=''>program</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-752' class='srclink' href='../../../src/luminance/shader/program.rs.html#1-130' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>Shader programs related types and functions.</p>
+
+<p>A shader <code>Program</code> is an object representing several operations. It’s a streaming program that
+will operate on vertices, vertex patches, primitives and/or fragments.</p>
+
+<blockquote>
+<p><em>Note: shader programs don’t have to run on all those objects; they can be ran only on
+vertices and fragments, for instance</em>.</p>
+</blockquote>
+
+<p>Creating a shader program is very simple. You need shader <code>Stage</code>s representing each step of the
+processing. Here’s the actual mapping between the shader stage types and the processing unit:</p>
+
+<ul>
+<li><code>Stage&lt;TessellationControlShader&gt;</code>: ran on <strong>tessellation parameters</strong> ;</li>
+<li><code>Stage&lt;TessellationEvaluationShader&gt;</code>: ran on <strong>patches</strong> ;</li>
+<li><code>Stage&lt;VertexShader&gt;</code>: ran on <strong>vertices</strong> ;</li>
+<li><code>Stage&lt;GeometryShader&gt;</code>: ran on <strong>primitives</strong> ;</li>
+<li><code>Stage&lt;FragmentShader&gt;</code>: ran on <strong>screen fragments</strong>.</li>
+</ul>
+
+<p>You <em>have</em> to provide at least a <code>Stage&lt;VertexShader&gt;</code> and a <code>Stage&lt;FragmentShader&gt;</code>. If you
+want tessellation processing, you need to provide both a <code>Stage&lt;TessellationControlShader&gt;</code> and
+a <code>Stage&lt;TessellationEvaluationShader&gt;</code>. If you want primitives processing, you need to add a
+<code>Stage&lt;GeometryShader&gt;</code>.</p>
+
+<p>In order to customize the behavior of your shader programs, you have access to <em>uniforms</em>. For
+more details about them, see the documentation for the type <code>Uniform</code> and <code>Uniformable</code>. When
+creating a new shader program, you have to provide code to declare its <em>uniform interface</em>. The
+<em>uniform interface</em> refers to a type of your own that will be kept by the shader program and
+exposed to you when you’ll express the need to update its uniforms. That <em>uniform interface</em> is
+created via a closure you pass. That closure takes as arguments a <code>ProgramProxy</code> used to
+retrieve <code>Uniform</code>s from the program being constructed. That pattern, that can be a bit
+overwhelming at first, is important to keep things safe and functional. Keep in mind that you
+can make the closure fail, so that you can notify a <code>Uniform</code> lookup failure, for instance.</p>
+
+<p>You can create a <code>Program</code> with its <code>new</code> associated function.</p>
+
+<h1 id='example' class='section-header'><a href='#example'>Example</a></h1>
+<pre class='rust rust-example-rendered'>
+<span class='comment'>// assume we have a vertex shader `vs` and fragment shader `fs`</span>
+<span class='kw'>let</span> <span class='ident'>program</span> <span class='op'>=</span> <span class='ident'>Program</span>::<span class='ident'>new</span>(<span class='prelude-val'>None</span>, <span class='kw-2'>&amp;</span><span class='ident'>vs</span>, <span class='prelude-val'>None</span>, <span class='kw-2'>&amp;</span><span class='ident'>fs</span>, <span class='op'>|</span><span class='ident'>get_uni</span><span class='op'>|</span> {
+  <span class='kw'>let</span> <span class='ident'>resolution</span>: <span class='ident'>Uniform</span><span class='op'>&lt;</span>[<span class='ident'>f32</span>; <span class='number'>2</span>]<span class='op'>&gt;</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>get_uni</span>(<span class='string'>&quot;resolution&quot;</span>));
+  <span class='kw'>let</span> <span class='ident'>time</span>: <span class='ident'>Uniform</span><span class='op'>&lt;</span><span class='ident'>f32</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>get_uni</span>(<span class='string'>&quot;time&quot;</span>));
+
+  <span class='prelude-val'>Ok</span>((<span class='ident'>resolution</span>, <span class='ident'>time</span>))
+});</pre>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Program.html'
+                                  title='luminance::shader::program::Program'>Program</a></td>
+                           <td class='docblock short'>
+                                <p>A shader program with <em>uniform interface</em>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.ProgramProxy.html'
+                                  title='luminance::shader::program::ProgramProxy'>ProgramProxy</a></td>
+                           <td class='docblock short'>
+                                <p><code>Program</code> proxy used to map uniforms. When building a <code>Program</code>, as the <code>Program</code> doesn’t exist
+yet, a <code>ProgramProxy</code> is passed to act as it was the <code>Program</code>.</p>
+                           </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.ProgramError.html'
+                                  title='luminance::shader::program::ProgramError'>ProgramError</a></td>
+                           <td class='docblock short'>
+                                
+                           </td>
+                       </tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.HasProgram.html'
+                                  title='luminance::shader::program::HasProgram'>HasProgram</a></td>
+                           <td class='docblock short'>
+                                <p>Trait to implement to provide shader program features.</p>
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "luminance";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>
