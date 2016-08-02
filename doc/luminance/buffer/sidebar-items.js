@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["BufferError","Buffer errors."]],"struct":[["Buffer","A `Buffer` is a GPU region you can picture as an array. It has a static size and cannot be resized. The size is expressed in number of elements lying in the buffer, not in bytes."]],"trait":[["HasBuffer","Implement this trait to provide buffers."]]});

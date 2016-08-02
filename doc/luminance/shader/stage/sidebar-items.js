@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["StageError",""],["Type","A shader stage type."]],"struct":[["FragmentShader",""],["GeometryShader",""],["Stage","A shader stage. The `T` type variable gives the type of the shader."],["TessellationControlShader",""],["TessellationEvaluationShader",""],["VertexShader",""]],"trait":[["HasStage",""],["ShaderTypeable",""]]});

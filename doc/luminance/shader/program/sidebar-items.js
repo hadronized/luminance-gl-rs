@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ProgramError",""]],"struct":[["Program","A shader program with *uniform interface*."],["ProgramProxy","`Program` proxy used to map uniforms. When building a `Program`, as the `Program` doesn’t exist yet, a `ProgramProxy` is passed to act as it was the `Program`."]],"trait":[["HasProgram","Trait to implement to provide shader program features."]]});

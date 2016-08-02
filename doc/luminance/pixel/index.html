@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `pixel` mod in crate `luminance`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, pixel">
+
+    <title>luminance::pixel - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>luminance</a></p><script>window.sidebarCurrent = {name: 'pixel', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>luminance</a>::<wbr><a class='mod' href=''>pixel</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-578' class='srclink' href='../../src/luminance/pixel.rs.html#1-155' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>Pixel formats types and function manipulation.</p>
+
+<p>The <code>Pixel</code> trait is used to reify a pixel type at runtime via <code>PixelFormat</code>.</p>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Depth32F.html'
+                                  title='luminance::pixel::Depth32F'>Depth32F</a></td>
+                           <td class='docblock short'>
+                                <p>A depth 32-bit floating pixel format.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.PixelFormat.html'
+                                  title='luminance::pixel::PixelFormat'>PixelFormat</a></td>
+                           <td class='docblock short'>
+                                <p>A <code>PixelFormat</code> gathers a <code>Type</code> along with a <code>Format</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RGB32F.html'
+                                  title='luminance::pixel::RGB32F'>RGB32F</a></td>
+                           <td class='docblock short'>
+                                <p>A red, green and blue 32-bit floating pixel format.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RGB8UI.html'
+                                  title='luminance::pixel::RGB8UI'>RGB8UI</a></td>
+                           <td class='docblock short'>
+                                <p>A red, green and blue 8-bit unsigned pixel format.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RGBA32F.html'
+                                  title='luminance::pixel::RGBA32F'>RGBA32F</a></td>
+                           <td class='docblock short'>
+                                <p>A red, green, blue and alpha 32-bit floating pixel format.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RGBA8UI.html'
+                                  title='luminance::pixel::RGBA8UI'>RGBA8UI</a></td>
+                           <td class='docblock short'>
+                                <p>A red, green, blue and alpha 8-bit unsigned pixel format.</p>
+                           </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.Format.html'
+                                  title='luminance::pixel::Format'>Format</a></td>
+                           <td class='docblock short'>
+                                <p>Format of a pixel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.Type.html'
+                                  title='luminance::pixel::Type'>Type</a></td>
+                           <td class='docblock short'>
+                                <p>Pixel type.</p>
+                           </td>
+                       </tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.ColorPixel.html'
+                                  title='luminance::pixel::ColorPixel'>ColorPixel</a></td>
+                           <td class='docblock short'>
+                                <p>Constraint on <code>Pixel</code> for color ones.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.DepthPixel.html'
+                                  title='luminance::pixel::DepthPixel'>DepthPixel</a></td>
+                           <td class='docblock short'>
+                                <p>Constraint on <code>Pixel</code> for depth ones.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.Pixel.html'
+                                  title='luminance::pixel::Pixel'>Pixel</a></td>
+                           <td class='docblock short'>
+                                <p>Reify a static pixel format to runtime.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.RenderablePixel.html'
+                                  title='luminance::pixel::RenderablePixel'>RenderablePixel</a></td>
+                           <td class='docblock short'>
+                                <p>Constaint on <code>Pixel</code> for renderable ones.</p>
+                           </td>
+                       </tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.is_color_pixel.html'
+                                  title='luminance::pixel::is_color_pixel'>is_color_pixel</a></td>
+                           <td class='docblock short'>
+                                <p>Does a <code>PixelFormat</code> represent a color?</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.is_depth_pixel.html'
+                                  title='luminance::pixel::is_depth_pixel'>is_depth_pixel</a></td>
+                           <td class='docblock short'>
+                                <p>Does a <code>PixelFormat</code> represent depth information?</p>
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "luminance";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

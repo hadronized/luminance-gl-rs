@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `buffer` mod in crate `luminance`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, buffer">
+
+    <title>luminance::buffer - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>luminance</a></p><script>window.sidebarCurrent = {name: 'buffer', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>luminance</a>::<wbr><a class='mod' href=''>buffer</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-56' class='srclink' href='../../src/luminance/buffer.rs.html#1-161' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>Static GPU typed arrays.</p>
+
+<p>A GPU buffer is a typed continuous region of data. It has a size and can hold several elements.</p>
+
+<p>Buffers are created with the <code>new</code> associated function. You pass in the number of elements you
+want in the buffer.</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='kw'>let</span> <span class='ident'>buffer</span>: <span class='ident'>Buffer</span><span class='op'>&lt;</span><span class='ident'>f32</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>Buffer</span>::<span class='ident'>new</span>(<span class='number'>5</span>);</pre>
+
+<p>Once the buffer is created, you can perform several operations on them:</p>
+
+<ul>
+<li>writing to them ;</li>
+<li>reading from them ;</li>
+<li>passing them around as uniforms ;</li>
+<li>etc.</li>
+</ul>
+
+<h1 id='writing-to-a-buffer' class='section-header'><a href='#writing-to-a-buffer'>Writing to a buffer</a></h1>
+<p><code>Buffer</code>s support several write methods. The simple one is <em>clearing</em>. That is, replacing the
+whole content of the buffer with a single value. Use the <code>fill</code> function to do so.</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='ident'>buffer</span>.<span class='ident'>clear</span>(<span class='number'>0.</span>);</pre>
+
+<p>If you want to clear the buffer by providing a value for each elements, you want <em>filling</em>. Use
+the <code>fill</code> function:</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='ident'>buffer</span>.<span class='ident'>fill</span>([<span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>4</span>, <span class='number'>5</span>]);</pre>
+
+<p>If you want to change a value at a given index, you can use the <code>set</code> function.</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='ident'>buffer</span>.<span class='ident'>set</span>(<span class='number'>3</span>, <span class='number'>3.14</span>);</pre>
+
+<h1 id='reading-from-the-buffer' class='section-header'><a href='#reading-from-the-buffer'>Reading from the buffer</a></h1>
+<p>You can either retrieve the <code>whole</code> content of the <code>Buffer</code> or <code>get</code> a value with an index.</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='comment'>// get the whole content</span>
+<span class='kw'>let</span> <span class='ident'>all_elems</span> <span class='op'>=</span> <span class='ident'>buffer</span>.<span class='ident'>whole</span>();
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>all_elems</span>.<span class='ident'>len</span>(), <span class='number'>5</span>);
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>all_elemns</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>3.14</span>, <span class='number'>5</span>]); <span class='comment'>// admit floating equalities</span>
+
+<span class='comment'>// get the element at index 3</span>
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>buffer</span>.<span class='ident'>get</span>(<span class='number'>3</span>), <span class='prelude-val'>Some</span>(<span class='number'>3.14</span>));</pre>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Buffer.html'
+                                  title='luminance::buffer::Buffer'>Buffer</a></td>
+                           <td class='docblock short'>
+                                <p>A <code>Buffer</code> is a GPU region you can picture as an array. It has a static size and cannot be
+resized. The size is expressed in number of elements lying in the buffer, not in bytes.</p>
+                           </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.BufferError.html'
+                                  title='luminance::buffer::BufferError'>BufferError</a></td>
+                           <td class='docblock short'>
+                                <p>Buffer errors.</p>
+                           </td>
+                       </tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.HasBuffer.html'
+                                  title='luminance::buffer::HasBuffer'>HasBuffer</a></td>
+                           <td class='docblock short'>
+                                <p>Implement this trait to provide buffers.</p>
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "luminance";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>
