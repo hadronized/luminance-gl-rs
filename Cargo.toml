@@ -1,6 +1,6 @@
 [package]
 name = "luminance-gl"
-version = "0.5.1"
+version = "0.5.2"
 license = "BSD-3-Clause"
 authors = ["Dimitri 'phaazon' Sabadie <dimitri.sabadie@gmail.com>"]
 description = "OpenGL backends for luminance"
@@ -8,6 +8,7 @@ keywords = ["stateless", "type-safe", "graphics", "luminance", "opengl"]
 
 homepage = "https://github.com/phaazon/luminance-gl-rs"
 repository = "https://github.com/phaazon/luminance-gl-rs"
+documentation = "http://phaazon.github.io/luminance-gl-rs"
 
 readme = "README.md"
 
