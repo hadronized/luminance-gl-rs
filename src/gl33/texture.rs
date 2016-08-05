@@ -61,7 +61,22 @@ impl HasTexture for GL33 {
     unsafe {
       gl::BindTexture(texture.target, texture.handle);
 
-      upload_texels::<L, D, P>(texture.target, off, size, texels);
+      upload_texels::<L, D, P, P::Encoding>(texture.target, off, size, texels);
+
+      if gen_mipmaps {
+        gl::GenerateMipmap(texture.target);
+      }
+
+      gl::BindTexture(texture.target, 0);
+    }
+  }
+
+  fn upload_part_raw<L, D, P>(texture: &Self::ATexture, gen_mipmaps: bool, off: D::Offset, size: D::Size, texels: &Vec<P::RawEncoding>)
+      where L: Layerable, D::Offset: Copy, D::Size: Copy, D: Dimensionable, P: Pixel {
+    unsafe {
+      gl::BindTexture(texture.target, texture.handle);
+
+      upload_texels::<L, D, P, P::RawEncoding>(texture.target, off, size, texels);
 
       if gen_mipmaps {
         gl::GenerateMipmap(texture.target);
@@ -223,8 +238,8 @@ fn from_depth_comparison(fun: DepthComparison) -> GLenum {
   }
 }
 
-
-fn upload_texels<L, D, P>(target: GLenum, off: D::Offset, size: D::Size, texels: &Vec<P::Encoding>)
+// Upload texels into the texture’s memory. Becareful of the type of texels you send down.
+fn upload_texels<L, D, P, T>(target: GLenum, off: D::Offset, size: D::Size, texels: &Vec<T>)
     where L: Layerable,
           D: Dimensionable,
           D::Offset: Copy,

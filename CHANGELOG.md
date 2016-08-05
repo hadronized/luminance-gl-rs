@@ -1,3 +1,11 @@
+### 0.5.3
+
+- Support for raw texture uploads.
+
+### 0.5.2
+
+- Added documentation link.
+
 ### 0.5.1
 
 - *[internal]* Fixed vertex input offsets. That issue makes all prior versions fail when trying to
