@@ -47,15 +47,18 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-580' class='srclink' href='../../src/luminance/pixel.rs.html#6-11' title='goto source code'>[src]</a></span></h1>
+               </span><a id='src-580' class='srclink' href='../../src/luminance/pixel.rs.html#6-14' title='goto source code'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait Pixel {
     type <a href='#associatedtype.Encoding' class='type'>Encoding</a>;
+    type <a href='#associatedtype.RawEncoding' class='type'>RawEncoding</a>;
     fn <a href='#tymethod.pixel_format' class='fnname'>pixel_format</a>() -&gt; <a class='struct' href='../../luminance/pixel/struct.PixelFormat.html' title='luminance::pixel::PixelFormat'>PixelFormat</a>;
 }</pre><div class='docblock'><p>Reify a static pixel format to runtime.</p>
 </div>
             <h2 id='associated-types'>Associated Types</h2>
             <div class='methods'>
         <h3 id='associatedtype.Encoding' class='method stab '><code>type <a href='#associatedtype.Encoding' class='type'>Encoding</a></code></h3><div class='docblock'><p>Encoding of a single pixel. It should match the <code>PixelFormat</code> mapping.</p>
+</div><h3 id='associatedtype.RawEncoding' class='method stab '><code>type <a href='#associatedtype.RawEncoding' class='type'>RawEncoding</a></code></h3><div class='docblock'><p>Raw encoding of a single pixel; i.e. that is, encoding of underlying values in contiguous
+texture memory. It should be match the <code>PixelFormat</code> mapping.</p>
 </div></div>
             <h2 id='required-methods'>Required Methods</h2>
             <div class='methods'>
