@@ -13,3 +13,13 @@ pub fn gl_pixel_format(pf: PixelFormat) -> Option<(GLenum, GLenum, GLenum)> {
     _ => panic!("unsupported pixel format")
   }
 }
+
+// Return the number of components.
+pub fn pixel_components(pf: PixelFormat) -> usize {
+  match pf.format {
+    Format::RGB(_, _, _) => 3,
+    Format::RGBA(_, _, _, _) => 4,
+    Format::Depth(_) => 1,
+    _ => panic!("unsupported pixel format")
+  }
+}
