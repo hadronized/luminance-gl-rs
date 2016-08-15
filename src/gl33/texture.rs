@@ -1,10 +1,11 @@
 use gl;
 use gl::types::*;
-use gl33::pixel::gl_pixel_format;
+use gl33::pixel::{gl_pixel_format, pixel_components};
 use gl33::token::GL33;
 use luminance::texture::{self, DepthComparison, Dim, Dimensionable, Filter, HasTexture, Layerable,
                          Layering, Sampler, Wrap, dim_capacity};
 use luminance::pixel::{Pixel, PixelFormat};
+use std::mem;
 use std::os::raw::c_void;
 use std::ptr;
 
@@ -84,6 +85,33 @@ impl HasTexture for GL33 {
 
       gl::BindTexture(texture.target, 0);
     }
+  }
+
+  // FIXME: cubemaps?
+  fn get_raw_texels<P>(texture: &Self::ATexture) -> Vec<P::RawEncoding> where P: Pixel, P::RawEncoding: Copy {
+    let mut texels = Vec::new();
+    let pf = P::pixel_format();
+    let (format, _, ty) = gl_pixel_format(pf).unwrap();
+
+    unsafe {
+      let mut w = 0;
+      let mut h = 0;
+
+      gl::BindTexture(texture.target, texture.handle);
+
+      // retrieve the size of the texture (w and h)
+      gl::GetTexLevelParameteriv(texture.target, 0, gl::TEXTURE_WIDTH, &mut w);
+      gl::GetTexLevelParameteriv(texture.target, 0, gl::TEXTURE_HEIGHT, &mut h);
+
+      // resize the vec to allocate enough space to host the returned texels
+      texels.resize((w * h) as usize * pixel_components(pf), mem::uninitialized());
+
+      gl::GetTexImage(texture.target, 0, format, ty, texels.as_mut_ptr() as *mut c_void);
+
+      gl::BindTexture(texture.target, 0);
+    }
+
+    texels
   }
 }
 
