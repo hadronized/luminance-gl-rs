@@ -1,3 +1,7 @@
+### 0.5.4
+
+- Added support for getting textures’ texels.
+
 ### 0.5.3
 
 - Support for raw texture uploads.
