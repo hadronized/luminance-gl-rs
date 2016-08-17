@@ -57,6 +57,16 @@
 <span id="13">13</span>
 <span id="14">14</span>
 <span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>gl</span>;
 <span class='kw'>use</span> <span class='ident'>gl</span>::<span class='ident'>types</span>::<span class='op'>*</span>;
@@ -70,6 +80,16 @@
     (<span class='ident'>Format</span>::<span class='ident'>RGB</span>(<span class='number'>32</span>, <span class='number'>32</span>, <span class='number'>32</span>), <span class='ident'>Type</span>::<span class='ident'>Floating</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>((<span class='ident'>gl</span>::<span class='ident'>RGB</span>, <span class='ident'>gl</span>::<span class='ident'>RGB32F</span>, <span class='ident'>gl</span>::<span class='ident'>FLOAT</span>)),
     (<span class='ident'>Format</span>::<span class='ident'>RGBA</span>(<span class='number'>32</span>, <span class='number'>32</span>, <span class='number'>32</span>, <span class='number'>32</span>), <span class='ident'>Type</span>::<span class='ident'>Floating</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>((<span class='ident'>gl</span>::<span class='ident'>RGBA</span>, <span class='ident'>gl</span>::<span class='ident'>RGBA32F</span>, <span class='ident'>gl</span>::<span class='ident'>FLOAT</span>)),
     (<span class='ident'>Format</span>::<span class='ident'>Depth</span>(<span class='number'>32</span>), <span class='ident'>Type</span>::<span class='ident'>Floating</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>((<span class='ident'>gl</span>::<span class='ident'>DEPTH_COMPONENT</span>, <span class='ident'>gl</span>::<span class='ident'>DEPTH_COMPONENT32F</span>, <span class='ident'>gl</span>::<span class='ident'>FLOAT</span>)),
+    _ <span class='op'>=&gt;</span> <span class='macro'>panic</span><span class='macro'>!</span>(<span class='string'>&quot;unsupported pixel format&quot;</span>)
+  }
+}
+
+<span class='comment'>// Return the number of components.</span>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>pixel_components</span>(<span class='ident'>pf</span>: <span class='ident'>PixelFormat</span>) <span class='op'>-&gt;</span> <span class='ident'>usize</span> {
+  <span class='kw'>match</span> <span class='ident'>pf</span>.<span class='ident'>format</span> {
+    <span class='ident'>Format</span>::<span class='ident'>RGB</span>(_, _, _) <span class='op'>=&gt;</span> <span class='number'>3</span>,
+    <span class='ident'>Format</span>::<span class='ident'>RGBA</span>(_, _, _, _) <span class='op'>=&gt;</span> <span class='number'>4</span>,
+    <span class='ident'>Format</span>::<span class='ident'>Depth</span>(_) <span class='op'>=&gt;</span> <span class='number'>1</span>,
     _ <span class='op'>=&gt;</span> <span class='macro'>panic</span><span class='macro'>!</span>(<span class='string'>&quot;unsupported pixel format&quot;</span>)
   }
 }
@@ -97,6 +117,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 

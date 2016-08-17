@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/dsa/.cargo/registry/src/github.com-88ac128001ac3a9a/luminance-0.6.2/src/buffer.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/dsa/.cargo/registry/src/github.com-1ecc6299db9ec823/luminance-0.6.3/src/buffer.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>buffer.rs.html -- source</title>
@@ -268,9 +268,9 @@
   <span class='kw'>type</span> <span class='ident'>ABuffer</span>;
 
   <span class='doccomment'>/// Create a new buffer with a given size.</span>
-  <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>size</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span>::<span class='ident'>ABuffer</span>;
+  <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>size</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='self'>Self</span>::<span class='ident'>ABuffer</span>;
   <span class='doccomment'>/// Destroy a buffer.</span>
-  <span class='kw'>fn</span> <span class='ident'>free</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Self</span>::<span class='ident'>ABuffer</span>);
+  <span class='kw'>fn</span> <span class='ident'>free</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>Self</span>::<span class='ident'>ABuffer</span>);
   <span class='doccomment'>/// Write values into the buffer.</span>
   <span class='doccomment'>///</span>
   <span class='doccomment'>/// # Warnings</span>
@@ -284,22 +284,22 @@
   <span class='doccomment'>///</span>
   <span class='doccomment'>/// `Err(BufferError::TooFewValues)` if you provide less values than the buffer’s size. In that</span>
   <span class='doccomment'>/// case, all `values` are written and the missing ones remain the same in `buffer`.</span>
-  <span class='kw'>fn</span> <span class='ident'>write_whole</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>(<span class='ident'>buffer</span>: <span class='kw-2'>&amp;</span><span class='ident'>Self</span>::<span class='ident'>ABuffer</span>, <span class='ident'>values</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>T</span>]) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),<span class='ident'>BufferError</span><span class='op'>&gt;</span>;
+  <span class='kw'>fn</span> <span class='ident'>write_whole</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>(<span class='ident'>buffer</span>: <span class='kw-2'>&amp;</span><span class='self'>Self</span>::<span class='ident'>ABuffer</span>, <span class='ident'>values</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>T</span>]) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),<span class='ident'>BufferError</span><span class='op'>&gt;</span>;
   <span class='doccomment'>/// Write a single value in the buffer at a given offset.</span>
   <span class='doccomment'>///</span>
   <span class='doccomment'>/// # Failures</span>
   <span class='doccomment'>///</span>
   <span class='doccomment'>/// `Err(BufferError::Overflow)` if you provide an offset that doesn’t lie in the allocated GPU</span>
   <span class='doccomment'>/// region.</span>
-  <span class='kw'>fn</span> <span class='ident'>write</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>(<span class='ident'>buffer</span>: <span class='kw-2'>&amp;</span><span class='ident'>Self</span>::<span class='ident'>ABuffer</span>, <span class='ident'>offset</span>: <span class='ident'>usize</span>, <span class='ident'>x</span>: <span class='ident'>T</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>BufferError</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>T</span>: <span class='ident'>Copy</span>;
+  <span class='kw'>fn</span> <span class='ident'>write</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>(<span class='ident'>buffer</span>: <span class='kw-2'>&amp;</span><span class='self'>Self</span>::<span class='ident'>ABuffer</span>, <span class='ident'>offset</span>: <span class='ident'>usize</span>, <span class='ident'>x</span>: <span class='ident'>T</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>BufferError</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>T</span>: <span class='ident'>Copy</span>;
   <span class='doccomment'>/// Read all values from the buffer.</span>
-  <span class='kw'>fn</span> <span class='ident'>read_whole</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>(<span class='ident'>buffer</span>: <span class='kw-2'>&amp;</span><span class='ident'>Self</span>::<span class='ident'>ABuffer</span>, <span class='ident'>nb</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>T</span>: <span class='ident'>Copy</span>;
+  <span class='kw'>fn</span> <span class='ident'>read_whole</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>(<span class='ident'>buffer</span>: <span class='kw-2'>&amp;</span><span class='self'>Self</span>::<span class='ident'>ABuffer</span>, <span class='ident'>nb</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>T</span>: <span class='ident'>Copy</span>;
   <span class='doccomment'>/// Read a single value from the buffer at a given offset.</span>
   <span class='doccomment'>///</span>
   <span class='doccomment'>/// # Failures</span>
   <span class='doccomment'>///</span>
   <span class='doccomment'>/// `None` if you provide an offset that doesn’t lie in the allocated GPU region.</span>
-  <span class='kw'>fn</span> <span class='ident'>read</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>(<span class='ident'>buffer</span>: <span class='kw-2'>&amp;</span><span class='ident'>Self</span>::<span class='ident'>ABuffer</span>, <span class='ident'>offset</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>T</span>: <span class='ident'>Copy</span>;
+  <span class='kw'>fn</span> <span class='ident'>read</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>(<span class='ident'>buffer</span>: <span class='kw-2'>&amp;</span><span class='self'>Self</span>::<span class='ident'>ABuffer</span>, <span class='ident'>offset</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>T</span>: <span class='ident'>Copy</span>;
 }
 
 <span class='doccomment'>/// Buffer errors.</span>
@@ -389,6 +389,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 

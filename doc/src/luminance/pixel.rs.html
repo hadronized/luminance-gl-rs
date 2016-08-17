@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/dsa/.cargo/registry/src/github.com-88ac128001ac3a9a/luminance-0.6.2/src/pixel.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/dsa/.cargo/registry/src/github.com-1ecc6299db9ec823/luminance-0.6.3/src/pixel.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>pixel.rs.html -- source</title>
@@ -266,8 +266,8 @@
 <span class='doccomment'>/// Does a `PixelFormat` represent a color?</span>
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>is_color_pixel</span>(<span class='ident'>f</span>: <span class='ident'>PixelFormat</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
   <span class='kw'>match</span> <span class='ident'>f</span>.<span class='ident'>format</span> {
-      <span class='ident'>Format</span>::<span class='ident'>Depth</span>(_) <span class='op'>=&gt;</span> <span class='boolval'>false</span>
-    , _ <span class='op'>=&gt;</span> <span class='boolval'>true</span>
+      <span class='ident'>Format</span>::<span class='ident'>Depth</span>(_) <span class='op'>=&gt;</span> <span class='bool-val'>false</span>
+    , _ <span class='op'>=&gt;</span> <span class='bool-val'>true</span>
   }
 }
 
@@ -393,6 +393,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
