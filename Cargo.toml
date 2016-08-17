@@ -14,5 +14,4 @@ readme = "README.md"
 
 [dependencies]
 gl = "0.5.2"
-#luminance = "0.6.2"
-luminance = { path = "../luminance-rs" }
+luminance = "0.6.3"
