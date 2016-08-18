@@ -1,6 +1,6 @@
 use gl;
 use gl::types::*;
-use gl33::token::GL33;
+use gl40::token::GL40;
 use luminance::texture::{self, DepthComparison, Dim, Dimensionable, Filter, HasTexture, Layerable,
                          Layering, Sampler, Wrap, dim_capacity};
 use luminance::pixel::{Pixel, PixelFormat};
@@ -9,7 +9,7 @@ use std::mem;
 use std::os::raw::c_void;
 use std::ptr;
 
-pub type Texture<L, D, P> = texture::Texture<GL33, L, D, P>;
+pub type Texture<L, D, P> = texture::Texture<GL40, L, D, P>;
 
 // OpenGL texture representation.
 pub struct GLTexture {
@@ -26,7 +26,7 @@ impl GLTexture {
   }
 }
 
-impl HasTexture for GL33 {
+impl HasTexture for GL40 {
   type ATexture = GLTexture;
 
   fn new_texture<L, D, P>(size: D::Size, mipmaps: usize, sampler: &Sampler) -> Self::ATexture
