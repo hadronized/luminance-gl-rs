@@ -12,6 +12,12 @@ documentation = "http://phaazon.github.io/luminance-gl-rs"
 
 readme = "README.md"
 
+[features]
+default = ["gl33"]
+gl33 = []
+gl40 = []
+bindless-textures = []
+
 [dependencies]
 gl = "0.5.2"
 luminance = "0.6.3"
