@@ -1,10 +1,10 @@
 use gl;
 use gl::types::*;
-use gl33::pixel::{gl_pixel_format, pixel_components};
 use gl33::token::GL33;
 use luminance::texture::{self, DepthComparison, Dim, Dimensionable, Filter, HasTexture, Layerable,
                          Layering, Sampler, Wrap, dim_capacity};
 use luminance::pixel::{Pixel, PixelFormat};
+use pixel::{gl_pixel_format, pixel_components};
 use std::mem;
 use std::os::raw::c_void;
 use std::ptr;
