@@ -57,12 +57,15 @@ impl HasProgram for GL33 {
   fn map_uniform(program: &Self::Program, name: String, ty: Type, dim: Dim) -> Result<Self::U, ProgramError> {
     let location = unsafe { gl::GetUniformLocation(*program, CString::new(name.as_bytes()).unwrap().as_ptr() as *const GLchar) };
 
-    // check whether the static type matches the type in the shader
-    if let Some(err) = uniform_type_match(*program, location as u32, ty, dim) {
-      return Err(ProgramError::UniformTypeMismatch(err));
+    if location == -1 {
+      return Err(ProgramError::InactiveUniform(name));
     }
 
-    if location != -1 { Ok(location) } else { Err(ProgramError::InactiveUniform(name)) }
+    if let Some(err) = uniform_type_match(*program, location as u32, ty, dim) {
+       return Err(ProgramError::UniformTypeMismatch(err));
+    }
+
+    Ok(location)
   }
 
   fn update_uniforms<F>(program: &Self::Program, f: F) where F: Fn() {
@@ -84,6 +87,8 @@ fn uniform_type_match(program: GLuint, location: GLuint, ty: Type, dim: Dim) -> 
   if size != 1 {
     return None;
   }
+
+  println!("  read: {} for {:?} {:?} (location = {})", typ, ty, dim, location);
 
   match (ty, dim) {
     (Type::Integral, Dim::Dim1) if typ != gl::INT => Some("requested int doesn't match".into()),
