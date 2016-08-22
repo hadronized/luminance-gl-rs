@@ -18,4 +18,4 @@ gl33 = []
 
 [dependencies]
 gl = "0.5.2"
-luminance = "0.6.3"
+luminance = "0.6.4"
