@@ -1,3 +1,7 @@
+### 0.5.5
+
+- Support for runtime reification of uniforms.
+
 ### 0.5.4
 
 - Added support for getting textures’ texels.
