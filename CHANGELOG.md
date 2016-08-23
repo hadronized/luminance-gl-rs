@@ -1,3 +1,7 @@
+### 0.5.6
+
+- Fixed runtime reification of uniforms.
+
 ### 0.5.5
 
 - Support for runtime reification of uniforms.

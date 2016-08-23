@@ -61,8 +61,8 @@ impl HasProgram for GL33 {
       return Err(ProgramError::InactiveUniform(name));
     }
 
-    if let Some(err) = uniform_type_match(*program, location as u32, ty, dim) {
-       return Err(ProgramError::UniformTypeMismatch(err));
+    if let Some(err) = uniform_type_match(*program, name, ty, dim) {
+      return Err(ProgramError::UniformTypeMismatch(err));
     }
 
     Ok(location)
@@ -76,19 +76,23 @@ impl HasProgram for GL33 {
 }
 
 // Return something if no match can be established.
-fn uniform_type_match(program: GLuint, location: GLuint, ty: Type, dim: Dim) -> Option<String> {
+fn uniform_type_match(program: GLuint, name: String, ty: Type, dim: Dim) -> Option<String> {
   let mut size: GLint = 0;
   let mut typ: GLuint = 0;
 
-  unsafe { gl::GetActiveUniform(program, location, 0, null_mut(), &mut size, &mut typ, null_mut()) };
+  unsafe {
+    // get the index of the uniform
+    let mut index = 0;
+    gl::GetUniformIndices(program, 1, [name.as_ptr() as *const i8].as_ptr(), &mut index);
+    // get its size and type
+    gl::GetActiveUniform(program, index, 0, null_mut(), &mut size, &mut typ, null_mut());
+  }
 
   // FIXME
   // early-return if array – we don’t support them yet
   if size != 1 {
     return None;
   }
-
-  println!("  read: {} for {:?} {:?} (location = {})", typ, ty, dim, location);
 
   match (ty, dim) {
     (Type::Integral, Dim::Dim1) if typ != gl::INT => Some("requested int doesn't match".into()),
