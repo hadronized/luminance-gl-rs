@@ -47,7 +47,7 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-25' class='srclink' href='../../src/luminance/blending.rs.html#41-63' title='goto source code'>[src]</a></span></h1>
+               </span><a id='src-43' class='srclink' href='../../src/luminance/blending.rs.html#41-63' title='goto source code'>[src]</a></span></h1>
 <pre class='rust enum'>pub enum Factor {
     One,
     Zero,
@@ -63,25 +63,25 @@
 }</pre><div class='docblock'><p>Blending factors. Pixel data are multiplied by these factors to achieve several effects driven
 by <em>blending equations</em>.</p>
 </div><h2 class='variants'>Variants</h2>
-<table class='variants_table'><tr><td id='variant.One'><code>One</code></td><td><div class='docblock'><p><code>1 * color = factor</code></p>
-</div></td><td></td></tr><tr><td id='variant.Zero'><code>Zero</code></td><td><div class='docblock'><p><code>0 * color = 0</code></p>
-</div></td><td></td></tr><tr><td id='variant.SrcColor'><code>SrcColor</code></td><td><div class='docblock'><p><code>src * color</code></p>
-</div></td><td></td></tr><tr><td id='variant.SrcColorComplement'><code>SrcColorComplement</code></td><td><div class='docblock'><p><code>(1 - src) * color</code></p>
-</div></td><td></td></tr><tr><td id='variant.DestColor'><code>DestColor</code></td><td><div class='docblock'><p><code>dst * color</code></p>
-</div></td><td></td></tr><tr><td id='variant.DestColorComplement'><code>DestColorComplement</code></td><td><div class='docblock'><p><code>(1 - dst) * color</code></p>
-</div></td><td></td></tr><tr><td id='variant.SrcAlpha'><code>SrcAlpha</code></td><td><div class='docblock'><p><code>srcA * color</code></p>
-</div></td><td></td></tr><tr><td id='variant.SrcAlphaComplement'><code>SrcAlphaComplement</code></td><td><div class='docblock'><p><code>(1 - src) * color</code></p>
-</div></td><td></td></tr><tr><td id='variant.DstAlpha'><code>DstAlpha</code></td><td><div class='docblock'><p><code>dstA * color</code></p>
-</div></td><td></td></tr><tr><td id='variant.DstAlphaComplement'><code>DstAlphaComplement</code></td><td><div class='docblock'><p><code>(1 - dstA) * color</code></p>
-</div></td><td></td></tr><tr><td id='variant.SrcAlphaSaturate'><code>SrcAlphaSaturate</code></td><td></td><td></td></tr></table><h2 id='implementations'>Trait Implementations</h2><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='enum' href='../../luminance/blending/enum.Factor.html' title='luminance::blending::Factor'>Factor</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-37' class='srclink' href='../../src/luminance/blending.rs.html#40' title='goto source code'>[src]</a></span></h3>
+<span id='variant.One' class='variant'><code>One</code></span><div class='docblock'><p><code>1 * color = factor</code></p>
+</div><span id='variant.Zero' class='variant'><code>Zero</code></span><div class='docblock'><p><code>0 * color = 0</code></p>
+</div><span id='variant.SrcColor' class='variant'><code>SrcColor</code></span><div class='docblock'><p><code>src * color</code></p>
+</div><span id='variant.SrcColorComplement' class='variant'><code>SrcColorComplement</code></span><div class='docblock'><p><code>(1 - src) * color</code></p>
+</div><span id='variant.DestColor' class='variant'><code>DestColor</code></span><div class='docblock'><p><code>dst * color</code></p>
+</div><span id='variant.DestColorComplement' class='variant'><code>DestColorComplement</code></span><div class='docblock'><p><code>(1 - dst) * color</code></p>
+</div><span id='variant.SrcAlpha' class='variant'><code>SrcAlpha</code></span><div class='docblock'><p><code>srcA * color</code></p>
+</div><span id='variant.SrcAlphaComplement' class='variant'><code>SrcAlphaComplement</code></span><div class='docblock'><p><code>(1 - src) * color</code></p>
+</div><span id='variant.DstAlpha' class='variant'><code>DstAlpha</code></span><div class='docblock'><p><code>dstA * color</code></p>
+</div><span id='variant.DstAlphaComplement' class='variant'><code>DstAlphaComplement</code></span><div class='docblock'><p><code>(1 - dstA) * color</code></p>
+</div><span id='variant.SrcAlphaSaturate' class='variant'><code>SrcAlphaSaturate</code></span><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='enum' href='../../luminance/blending/enum.Factor.html' title='luminance::blending::Factor'>Factor</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-24' class='srclink' href='../../src/luminance/blending.rs.html#40' title='goto source code'>[src]</a></span></h3>
 <div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
 <div class='docblock'><p>Formats the value using the given formatter.</p>
-</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='enum' href='../../luminance/blending/enum.Factor.html' title='luminance::blending::Factor'>Factor</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-52' class='srclink' href='../../src/luminance/blending.rs.html#40' title='goto source code'>[src]</a></span></h3>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='enum' href='../../luminance/blending/enum.Factor.html' title='luminance::blending::Factor'>Factor</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-39' class='srclink' href='../../src/luminance/blending.rs.html#40' title='goto source code'>[src]</a></span></h3>
 <div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='enum' href='../../luminance/blending/enum.Factor.html' title='luminance::blending::Factor'>Factor</a></code></h4>
 <div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
 </div><h4 id='method.clone_from' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div></h4>
 <div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
-</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a> for <a class='enum' href='../../luminance/blending/enum.Factor.html' title='luminance::blending::Factor'>Factor</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-55' class='srclink' href='../../src/luminance/blending.rs.html#40' title='goto source code'>[src]</a></span></h3>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a> for <a class='enum' href='../../luminance/blending/enum.Factor.html' title='luminance::blending::Factor'>Factor</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-42' class='srclink' href='../../src/luminance/blending.rs.html#40' title='goto source code'>[src]</a></span></h3>
 <div class='impl-items'></div></section>
     <section id='search' class="content hidden"></section>
 
