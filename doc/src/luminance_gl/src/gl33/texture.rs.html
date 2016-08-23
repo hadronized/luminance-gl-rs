@@ -339,11 +339,11 @@
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>gl</span>;
 <span class='kw'>use</span> <span class='ident'>gl</span>::<span class='ident'>types</span>::<span class='op'>*</span>;
-<span class='kw'>use</span> <span class='ident'>gl33</span>::<span class='ident'>pixel</span>::{<span class='ident'>gl_pixel_format</span>, <span class='ident'>pixel_components</span>};
 <span class='kw'>use</span> <span class='ident'>gl33</span>::<span class='ident'>token</span>::<span class='ident'>GL33</span>;
 <span class='kw'>use</span> <span class='ident'>luminance</span>::<span class='ident'>texture</span>::{<span class='self'>self</span>, <span class='ident'>DepthComparison</span>, <span class='ident'>Dim</span>, <span class='ident'>Dimensionable</span>, <span class='ident'>Filter</span>, <span class='ident'>HasTexture</span>, <span class='ident'>Layerable</span>,
                          <span class='ident'>Layering</span>, <span class='ident'>Sampler</span>, <span class='ident'>Wrap</span>, <span class='ident'>dim_capacity</span>};
 <span class='kw'>use</span> <span class='ident'>luminance</span>::<span class='ident'>pixel</span>::{<span class='ident'>Pixel</span>, <span class='ident'>PixelFormat</span>};
+<span class='kw'>use</span> <span class='ident'>pixel</span>::{<span class='ident'>gl_pixel_format</span>, <span class='ident'>pixel_components</span>};
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>mem</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>os</span>::<span class='ident'>raw</span>::<span class='ident'>c_void</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ptr</span>;

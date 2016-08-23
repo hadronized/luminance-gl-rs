@@ -47,7 +47,7 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-985' class='srclink' href='../../../src/luminance/shader/uniform.rs.html#1-358' title='goto source code'>[src]</a></span></h1>
+               </span><a id='src-999' class='srclink' href='../../../src/luminance/shader/uniform.rs.html#1-559' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Shader uniforms and associated operations.</p>
 
 <p>Uniforms kick in several and useful ways. They’re used to customize shaders.</p>
@@ -67,6 +67,21 @@ host code and the shader the uniform was retrieved from.</p>
                            <td class='docblock short'>
                                 <p>Wrapper over <code>Uniform</code>, discarding everything but update.</p>
                            </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.Dim.html'
+                                  title='luminance::shader::uniform::Dim'>Dim</a></td>
+                           <td class='docblock short'>
+                                <p>Dimension of the uniform.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.Type.html'
+                                  title='luminance::shader::uniform::Type'>Type</a></td>
+                           <td class='docblock short'>
+                                <p>Type of a uniform.</p>
+                           </td>
                        </tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
 <table>
                        <tr class=' module-item'>
@@ -80,7 +95,8 @@ host code and the shader the uniform was retrieved from.</p>
                            <td><a class='trait' href='trait.Uniformable.html'
                                   title='luminance::shader::uniform::Uniformable'>Uniformable</a></td>
                            <td class='docblock short'>
-                                <p>Types that can behave as <code>Uniform</code>.</p>
+                                <p>Layering of a uniform (flat or layered/array).
+Types that can behave as <code>Uniform</code>.</p>
                            </td>
                        </tr></table></section>
     <section id='search' class="content hidden"></section>
