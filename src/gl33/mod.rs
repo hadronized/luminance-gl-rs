@@ -1,6 +1,5 @@
 pub mod buffer;
 pub mod framebuffer;
-mod pixel;
 pub mod pipeline;
 pub mod shader;
 pub mod tessellation;
