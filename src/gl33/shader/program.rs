@@ -2,7 +2,7 @@ use gl;
 use gl::types::*;
 use gl33::token::GL33;
 use luminance::shader::program;
-use luminance::shader::program::{HasProgram, ProgramError};
+use luminance::shader::program::{HasProgram, ProgramError, UniformWarning};
 use luminance::shader::uniform::{Dim, Type};
 use std::ffi::CString;
 use std::ptr::null_mut;
@@ -54,18 +54,18 @@ impl HasProgram for GL33 {
     unsafe { gl::DeleteProgram(*program) }
   }
 
-  fn map_uniform(program: &Self::Program, name: String, ty: Type, dim: Dim) -> Result<Self::U, ProgramError> {
+  fn map_uniform(program: &Self::Program, name: String, ty: Type, dim: Dim) -> (Self::U, Option<UniformWarning>) {
     let location = unsafe { gl::GetUniformLocation(*program, CString::new(name.as_bytes()).unwrap().as_ptr() as *const GLchar) };
 
     if location == -1 {
-      return Err(ProgramError::InactiveUniform(name));
+      return (-1, Some(UniformWarning::Inactive(name)));
     }
 
     if let Some(err) = uniform_type_match(*program, name, ty, dim) {
-      return Err(ProgramError::UniformTypeMismatch(err));
+      return (location, Some(UniformWarning::TypeMismatch(err)));
     }
 
-    Ok(location)
+    (location, None)
   }
 
   fn update_uniforms<F>(program: &Self::Program, f: F) where F: Fn() {
