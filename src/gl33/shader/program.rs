@@ -32,10 +32,10 @@ impl HasProgram for GL33 {
 
       gl::LinkProgram(program);
 
-      let mut linked: GLboolean = gl::FALSE;
-      gl::GetProgramiv(program, gl::LINK_STATUS, (&mut linked as *mut GLboolean) as *mut GLint);
+      let mut linked: GLint = gl::FALSE as GLint;
+      gl::GetProgramiv(program, gl::LINK_STATUS, &mut linked);
 
-      if linked == gl::TRUE {
+      if linked == (gl::TRUE as GLint) {
         Ok(program)
       } else {
         let mut log_len: GLint = 0;
