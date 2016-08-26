@@ -1,3 +1,11 @@
+## 0.6.1
+
+- Fixed memory corruption in new_shader / new_program.
+
+## 0.6.0
+
+- Uniform warnings.
+
 ### 0.5.6
 
 - Fixed runtime reification of uniforms.
