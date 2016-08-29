@@ -44,7 +44,10 @@ impl HasProgram for GL33 {
         let mut log: Vec<u8> = Vec::with_capacity(log_len as usize);
         gl::GetProgramInfoLog(program, log_len, null_mut(), log.as_mut_ptr() as *mut GLchar);
 
+        gl::DeleteProgram(program);
+
         log.set_len(log_len as usize);
+
         Err(ProgramError::LinkFailed(String::from_utf8(log).unwrap()))
       }
     }

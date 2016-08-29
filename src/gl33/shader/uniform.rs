@@ -5,6 +5,7 @@ use luminance::linear::*;
 use luminance::shader::uniform;
 
 pub type Uniform<T> = uniform::Uniform<GL33, T>;
+pub type Uniformable = uniform::Uniformable<GL33>;
 
 impl uniform::HasUniform for GL33 {
   type U = GLint;
