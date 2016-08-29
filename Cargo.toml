@@ -8,7 +8,7 @@ keywords = ["stateless", "type-safe", "graphics", "luminance", "opengl"]
 
 homepage = "https://github.com/phaazon/luminance-gl-rs"
 repository = "https://github.com/phaazon/luminance-gl-rs"
-documentation = "http://phaazon.github.io/luminance-gl-rs"
+documentation = "https://docs.rs/luminance-gl"
 
 readme = "README.md"
 
