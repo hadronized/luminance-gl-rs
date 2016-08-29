@@ -38,7 +38,10 @@ impl HasStage for GL33 {
         let mut log: Vec<u8> = Vec::with_capacity(log_len as usize);
         gl::GetShaderInfoLog(handle, log_len, null_mut(), log.as_mut_ptr() as *mut GLchar);
 
+        gl::DeleteShader(handle);
+
         log.set_len(log_len as usize);
+
         Err(StageError::CompilationFailed(shader_type, String::from_utf8(log).unwrap()))
       }
     }
