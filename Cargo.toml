@@ -19,3 +19,6 @@ gl33 = []
 [dependencies]
 gl = "0.5.2"
 luminance = "0.7.0"
+
+[replace]
+"luminance:0.7.0" = { path = "../luminance-rs" }
