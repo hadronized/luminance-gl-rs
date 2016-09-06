@@ -132,10 +132,9 @@ fn from_dim(d: &Dim) -> GLint {
 
 fn from_type(t: &Type) -> GLenum {
   match *t {
-    Type::Integral => gl::INT,
+    Type::Integral | Type::Boolean => gl::INT,
     Type::Unsigned => gl::UNSIGNED_INT,
     Type::Floating => gl::FLOAT,
-    Type::Boolean => gl::INT
   }
 }
 
