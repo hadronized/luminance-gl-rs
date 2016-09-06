@@ -58,7 +58,8 @@ impl HasProgram for GL33 {
   }
 
   fn map_uniform(program: &Self::Program, name: String, ty: Type, dim: Dim) -> (Self::U, Option<UniformWarning>) {
-    let location = unsafe { gl::GetUniformLocation(*program, CString::new(name.as_bytes()).unwrap().as_ptr() as *const GLchar) };
+    let c_name = CString::new(name.as_bytes()).unwrap();
+    let location = unsafe { gl::GetUniformLocation(*program, c_name.as_ptr() as *const GLchar) };
 
     if location == -1 {
       return (-1, Some(UniformWarning::Inactive(name)));

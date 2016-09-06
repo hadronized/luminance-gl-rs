@@ -107,15 +107,15 @@ impl uniform::HasUniform for GL33 {
   }
 
   fn update22_f32(u: &Self::U, m: M22) {
-    Self::update22_slice_f32(u, &vec![m])
+    Self::update22_slice_f32(u, &[m])
   }
 
   fn update33_f32(u: &Self::U, m: M33) {
-    Self::update33_slice_f32(u, &vec![m])
+    Self::update33_slice_f32(u, &[m])
   }
 
   fn update44_f32(u: &Self::U, m: M44) {
-    Self::update44_slice_f32(u, &vec![m])
+    Self::update44_slice_f32(u, &[m])
   }
 
   fn update22_slice_f32(u: &Self::U, v: &[M22]) {

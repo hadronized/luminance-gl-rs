@@ -3,7 +3,7 @@ use gl::types::*;
 use gl33::buffer::Buffer;
 use gl33::token::GL33;
 use luminance::tessellation::{self, HasTessellation, Mode};
-use luminance::vertex::{Dim, Type, Vertex, VertexComponentFormat, VertexFormat};
+use luminance::vertex::{Dim, Type, Vertex, VertexComponentFormat};
 use std::mem;
 use std::ptr;
 
@@ -44,7 +44,7 @@ impl HasTessellation for GL33 {
       if let Some(indices) = indices {
         let ind_nb = indices.len();
         let index_buffer = Buffer::new(ind_nb);
-        index_buffer.fill(&indices);
+        index_buffer.fill(indices);
 
         // same than vertex buffer, once the index buffer is filled, we leak it to the void
         let ibo = index_buffer.repr.handle;
@@ -104,7 +104,7 @@ impl HasTessellation for GL33 {
   }
 }
 
-fn set_vertex_pointers(formats: &VertexFormat) {
+fn set_vertex_pointers(formats: &[VertexComponentFormat]) {
   let vertex_weight = vertex_weight(formats) as GLsizei;
   let mut offset = 0;
 
@@ -139,7 +139,7 @@ fn from_type(t: &Type) -> GLenum {
   }
 }
 
-fn vertex_weight(formats: &VertexFormat) -> usize {
+fn vertex_weight(formats: &[VertexComponentFormat]) -> usize {
   formats.iter().fold(0, |a, f| a + component_weight(f))
 }
 
