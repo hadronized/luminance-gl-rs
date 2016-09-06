@@ -1,4 +1,8 @@
-## 0.6.1
+## 0.7.0
+
+- Replaced some references to `Vec` by slices used by the `luminance` crate.
+
+### 0.6.1
 
 - Fixed memory corruption in new_shader / new_program.
 
