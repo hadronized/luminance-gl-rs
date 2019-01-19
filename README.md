@@ -1,10 +1,12 @@
-[![Build Status](https://travis-ci.org/phaazon/luminance-gl-rs.svg?branch=master)](https://travis-ci.org/phaazon/luminance-gl-rs)
-[![crates.io](https://img.shields.io/crates/v/luminance-gl.svg)](https://crates.io/crates/luminance-gl)
-![License](https://img.shields.io/badge/license-BSD3-blue.svg?style=flat)
+# This project is deprecated
 
-# OpenGL luminance backend
+This crate is now deprecated. If you were using it and would like to update, please visit the page
+of [luminance].
 
-This package provides several **OpenGL** backends for
-[`luminance`](https://crates.io/crates/luminance). Here’s a list of the available backends:
+> Why did this crate get deprecated?
 
-- `luminance_gl::gl33`: **OpenGL 3.3** backend
+Mostly because [luminance] is now a standalone project (no backend involved). It enables the library
+to be more concise by narrowing its scope and provide a well-defined interface instead of a blurred
+set of mixins.
+
+[luminance]: https://crates.io/crates/luminance

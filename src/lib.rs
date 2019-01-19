@@ -1,3 +1,8 @@
+#![deprecated(
+  since = "0.13.1",
+  note = "Please use [luminance](https://crates.io/crates/luminance) directly."
+)]
+
 extern crate gl;
 extern crate luminance;
 

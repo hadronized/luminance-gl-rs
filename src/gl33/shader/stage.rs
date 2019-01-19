@@ -6,10 +6,7 @@ use luminance::shader::stage::{HasStage, StageError, Type};
 use std::ffi::CString;
 use std::ptr::{null, null_mut};
 
-pub use luminance::shader::stage::{TessellationControlShader, TessellationEvaluationShader,
-                                   VertexShader, GeometryShader, FragmentShader};
-
-pub type Stage<T> = stage::Stage<GL33, T>;
+pub type Stage = stage::Stage<GL33>;
 
 impl HasStage for GL33 {
   type AStage = GLuint;
