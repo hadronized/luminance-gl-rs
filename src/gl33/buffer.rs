@@ -9,13 +9,16 @@ use std::ptr;
 use std::slice;
 
 pub type Buffer<T> = buffer::Buffer<GL33, T>;
+pub type BufferSlice<'a, T> = buffer::BufferSlice<'a, GL33, T>;
+pub type BufferSliceMut<'a, T> = buffer::BufferSliceMut<'a, GL33, T>;
 
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub struct GLBuffer {
   pub handle: GLuint,
   pub bytes: usize
 }
 
-impl buffer::HasBuffer for GL33 {
+unsafe impl buffer::HasBuffer for GL33 {
   type ABuffer = GLBuffer;
 
   fn new(size: usize) -> Self::ABuffer {
@@ -38,7 +41,7 @@ impl buffer::HasBuffer for GL33 {
     unsafe { gl::DeleteBuffers(1, &buffer.handle) }
   }
 
-  fn write_whole<T>(buffer: &GLBuffer, values: &[T]) -> Result<(), buffer::BufferError> {
+  fn write_whole<T>(buffer: &Self::ABuffer, values: &[T]) -> Result<(), buffer::BufferError> {
     let bytes = values.len() * mem::size_of::<T>();
 
     // generate warning and recompute the proper number of bytes to copy
@@ -64,7 +67,7 @@ impl buffer::HasBuffer for GL33 {
     }
   }
 
-  fn write<T>(buffer: &GLBuffer, off: usize, x: T) -> Result<(), buffer::BufferError> where T: Copy {
+  fn write<T>(buffer: &Self::ABuffer, off: usize, x: T) -> Result<(), buffer::BufferError> where T: Copy {
     if off >= buffer.bytes {
       return Err(buffer::BufferError::Overflow);
     }
@@ -82,7 +85,7 @@ impl buffer::HasBuffer for GL33 {
     Ok(())
   }
 
-  fn read_whole<T>(buffer: &GLBuffer, nb: usize) -> Vec<T> where T: Copy {
+  fn read_whole<T>(buffer: &Self::ABuffer, nb: usize) -> Vec<T> where T: Copy {
     unsafe {
       gl::BindBuffer(gl::ARRAY_BUFFER, buffer.handle);
       let ptr = gl::MapBuffer(gl::ARRAY_BUFFER, gl::READ_ONLY) as *const T;
@@ -96,7 +99,7 @@ impl buffer::HasBuffer for GL33 {
     }
   }
 
-  fn read<T>(buffer: &GLBuffer, off: usize) -> Option<T> where T: Copy {
+  fn read<T>(buffer: &Self::ABuffer, off: usize) -> Option<T> where T: Copy {
     if off >= buffer.bytes {
       return None;
     }
@@ -105,12 +108,33 @@ impl buffer::HasBuffer for GL33 {
       gl::BindBuffer(gl::ARRAY_BUFFER, buffer.handle);
       let ptr = gl::MapBuffer(gl::ARRAY_BUFFER, gl::READ_ONLY);
 
-      let x = &*(ptr.offset(off as isize) as *const T);
+      let x = *(ptr.offset(off as isize) as *const T);
 
       let _ = gl::UnmapBuffer(gl::ARRAY_BUFFER);
       gl::BindBuffer(gl::ARRAY_BUFFER, 0);
 
-      Some(*x)
+      Some(x)
+    }
+  }
+
+  fn map<T>(buffer: &mut Self::ABuffer) -> *const T {
+    unsafe {
+      gl::BindBuffer(gl::ARRAY_BUFFER, buffer.handle);
+      gl::MapBuffer(gl::ARRAY_BUFFER, gl::READ_ONLY) as *const T
+    }
+  }
+
+  fn map_mut<T>(buffer: &mut Self::ABuffer) -> *mut T {
+    unsafe {
+      gl::BindBuffer(gl::ARRAY_BUFFER, buffer.handle);
+      gl::MapBuffer(gl::ARRAY_BUFFER, gl::READ_WRITE) as *mut T
+    }
+  }
+
+  fn unmap(buffer: &mut Self::ABuffer) {
+    unsafe {
+      gl::BindBuffer(gl::ARRAY_BUFFER, buffer.handle); // do that to be sure we’re unmapping that buffer
+      gl::UnmapBuffer(gl::ARRAY_BUFFER);
     }
   }
 }

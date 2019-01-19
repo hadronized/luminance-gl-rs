@@ -2,7 +2,7 @@ use gl;
 use gl::types::*;
 use gl33::token::GL33;
 use luminance::texture::{self, DepthComparison, Dim, Dimensionable, Filter, HasTexture, Layerable,
-                         Layering, Sampler, Wrap, dim_capacity};
+                         Layering, Result, Sampler, TextureError, Wrap, dim_capacity};
 use luminance::pixel::{Pixel, PixelFormat};
 use pixel::{gl_pixel_format, pixel_components};
 use std::mem;
@@ -29,7 +29,7 @@ impl GLTexture {
 impl HasTexture for GL33 {
   type ATexture = GLTexture;
 
-  fn new_texture<L, D, P>(size: D::Size, mipmaps: usize, sampler: &Sampler) -> Self::ATexture
+  fn new_texture<L, D, P>(size: D::Size, mipmaps: usize, sampler: &Sampler) -> Result<Self::ATexture>
       where L: Layerable,
             D: Dimensionable,
             D::Size: Copy,
@@ -39,13 +39,17 @@ impl HasTexture for GL33 {
 
     unsafe {
       gl::GenTextures(1, &mut texture);
-
       gl::BindTexture(target, texture);
-      create_texture::<L, D>(target, size, mipmaps, P::pixel_format(), sampler);
+    }
+    
+    create_texture::<L, D>(target, size, mipmaps, P::pixel_format(), sampler)?;
+
+    // FIXME: maybe we can get rid of this
+    unsafe {
       gl::BindTexture(target, 0);
     }
 
-    GLTexture::new(texture, target)
+    Ok(GLTexture::new(texture, target))
   }
 
   fn free(texture: &mut Self::ATexture) {
@@ -115,13 +119,15 @@ impl HasTexture for GL33 {
   }
 }
 
-pub fn create_texture<L, D>(target: GLenum, size: D::Size, mipmaps: usize, pf: PixelFormat, sampler: &Sampler)
+pub fn create_texture<L, D>(target: GLenum, size: D::Size, mipmaps: usize, pf: PixelFormat, sampler: &Sampler) -> Result<()>
     where L: Layerable,
           D: Dimensionable,
           D::Size: Copy {
   set_texture_levels(target, mipmaps);
+
   apply_sampler_to_texture(target, sampler);
-  create_texture_storage::<L, D>(size, mipmaps, pf);
+
+  create_texture_storage::<L, D>(size, mipmaps, pf)
 }
 
 pub fn to_target(l: Layering, d: Dim) -> GLenum {
@@ -141,37 +147,39 @@ pub fn to_target(l: Layering, d: Dim) -> GLenum {
   }
 }
 
-fn create_texture_storage<L, D>(size: D::Size, mipmaps: usize, pf: PixelFormat) -> Option<String>
+fn create_texture_storage<L, D>(size: D::Size, mipmaps: usize, pf: PixelFormat) -> Result<()>
     where L: Layerable,
           D: Dimensionable,
           D::Size: Copy {
   match gl_pixel_format(pf) {
-    Some((format, iformat, encoding)) => {
+    Some(glf) => {
+      let (format, iformat, encoding) = glf;
+
       match (L::layering(), D::dim()) {
         // 1D texture
         (Layering::Flat, Dim::Dim1) => {
           create_texture_1d_storage(format, iformat, encoding, D::width(size), mipmaps);
-          None
+          Ok(())
         },
         // 2D texture
         (Layering::Flat, Dim::Dim2) => {
           create_texture_2d_storage(format, iformat, encoding, D::width(size), D::height(size), mipmaps);
-          None
+          Ok(())
         },
         // 3D texture
         (Layering::Flat, Dim::Dim3) => {
           create_texture_3d_storage(format, iformat, encoding, D::width(size), D::height(size), D::depth(size), mipmaps);
-          None
+          Ok(())
         },
         // cubemap
         (Layering::Flat, Dim::Cubemap) => {
           create_cubemap_storage(format, iformat, encoding, D::width(size), mipmaps);
-          None
+          Ok(())
         },
-        _ => Some(String::from("unsupported texture type"))
+        _ => Err(TextureError::TextureStorageCreationFailed(format!("unsupported texture OpenGL pixel format: {:?}", glf)))
       }
     },
-    None => Some(String::from("wrong pixel format"))
+    None => Err(TextureError::TextureStorageCreationFailed(format!("unsupported texture pixel format: {:?}", pf)))
   }
 }
 
